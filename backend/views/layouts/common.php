@@ -134,6 +134,22 @@ $bundle = BackendAsset::register($this);
                 'submenuTemplate' => "\n<ul class=\"treeview-menu\">\n{items}\n</ul>\n",
                 'activateParents' => true,
                 'items' => [
+
+                    [
+                        'label' => Yii::t('backend', 'Business'),
+                        'options' => ['class' => 'header']
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'Projects'),
+                        'icon' => '<i class="fa fa-bar-chart-o"></i>',
+                        'url' => ['/projects/index'],
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'Products'),
+                        'icon' => '<i class="fa fa-bar-chart-o"></i>',
+                        'url' => ['/products/index'],
+                    ],
+
                     [
                         'label' => Yii::t('backend', 'Main'),
                         'options' => ['class' => 'header']

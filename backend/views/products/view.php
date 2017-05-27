@@ -1,9 +1,40 @@
 <?php
-/* @var $this yii\web\View */
-?>
-<h1>product/view</h1>
 
-<p>
-    You may change the content of this page by modifying
-    the file <code><?= __FILE__; ?></code>.
-</p>
+use yii\helpers\Html;
+use yii\widgets\DetailView;
+
+/* @var $this yii\web\View */
+/* @var $model app\models\Products */
+
+$this->title = $model->name;
+$this->params['breadcrumbs'][] = ['label' => 'Products', 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;
+?>
+<div class="products-view">
+
+    <p>
+        <?php echo Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?php echo Html::a('Delete', ['delete', 'id' => $model->id], [
+            'class' => 'btn btn-danger',
+            'data' => [
+                'confirm' => 'Are you sure you want to delete this item?',
+                'method' => 'post',
+            ],
+        ]) ?>
+    </p>
+
+    <?php echo DetailView::widget([
+        'model' => $model,
+        'attributes' => [
+            'id',
+            'project_id',
+            'name',
+            'price',
+            'sale_price',
+            'quantity',
+            'description:ntext',
+            'image',
+        ],
+    ]) ?>
+
+</div>

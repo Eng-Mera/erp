@@ -48,6 +48,18 @@ class m170526_220433_create_products_table extends Migration
      */
     public function down()
     {
+        // drops foreign key for table `products`
+        $this->dropForeignKey(
+            'fk-product-project_id',
+            'products'
+        );
+
+        // drops index for column `project_id`
+        $this->dropIndex(
+            'idx-product-project_id',
+            'products'
+        );
+
         $this->dropTable('products');
     }
 }
