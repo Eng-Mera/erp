@@ -34,10 +34,11 @@ class Products extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['project_id', 'name', 'image'], 'required'],
+            [['project_id', 'name'], 'required'],
             [['project_id', 'price', 'sale_price', 'quantity'], 'integer'],
             [['description'], 'string'],
-            [['name', 'image'], 'string', 'max' => 255],
+            [['name'], 'string', 'max' => 255],
+            [['image'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg,jpeg'],
             [['project_id'], 'exist', 'skipOnError' => true, 'targetClass' => Projects::className(), 'targetAttribute' => ['project_id' => 'id']],
         ];
     }
@@ -65,5 +66,18 @@ class Products extends \yii\db\ActiveRecord
     public function getProject()
     {
         return $this->hasOne(Projects::className(), ['id' => 'project_id']);
+    }
+
+    public function upload()
+    {
+        if ($this->validate()) {
+            if ($this->image->saveAs(Yii::getAlias('@uploadsDir') . '/' . $this->image->baseName . '.' . $this->image->extension))
+            {
+                return true;
+            }
+            return false;
+        } else {
+            return false;
+        }
     }
 }

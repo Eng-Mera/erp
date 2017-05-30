@@ -29,8 +29,9 @@ class Projects extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'logo'], 'required'],
-            [['name', 'logo'], 'string', 'max' => 255],
+            [['name'], 'required'],
+            [['name'], 'string', 'max' => 255],
+            [['logo'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg,jpeg'],
         ];
     }
 
@@ -53,4 +54,18 @@ class Projects extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Products::className(), ['project_id' => 'id']);
     }
+
+    public function upload()
+    {
+        if ($this->validate()) {
+            if ($this->logo->saveAs(Yii::getAlias('@uploadsDir') . '/' . $this->logo->baseName . '.' . $this->logo->extension))
+            {
+                return true;
+            }
+            return false;
+        } else {
+            return false;
+        }
+    }
+
 }

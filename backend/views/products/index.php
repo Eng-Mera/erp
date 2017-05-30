@@ -32,6 +32,14 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'quantity',
             // 'description:ntext',
             // 'image',
+            [
+                'attribute' => 'image',
+                'label' => Yii::t('app', 'Image'),
+                'value' => function($model){
+                    return !empty($model->image)? Yii::getAlias('@uploads') . '/' . $model->image : 'No Image' ;
+                },
+                'format' => ['image', ['width' => 100, 'height' => 100]],
+            ],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

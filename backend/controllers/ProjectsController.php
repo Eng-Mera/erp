@@ -8,6 +8,7 @@ use backend\models\search\ProjectsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * ProjectsController implements the CRUD actions for Projects model.
@@ -62,8 +63,22 @@ class ProjectsController extends Controller
     {
         $model = new Projects();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post()))
+        {
+            $model->logo = UploadedFile::getInstance($model, 'logo');
+            if ($model->save())
+            {
+                if ($model->upload())
+                {
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+            }
+            else
+            {
+                return $this->render('create', [
+                    'model' => $model,
+                ]);
+            }
         } else {
             return $this->render('create', [
                 'model' => $model,
