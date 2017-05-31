@@ -149,6 +149,16 @@ $bundle = BackendAsset::register($this);
                         'icon' => '<i class="fa fa-bar-chart-o"></i>',
                         'url' => ['/products/index'],
                     ],
+                    [
+                        'label' => Yii::t('backend', 'Customers'),
+                        'icon' => '<i class="fa fa-bar-chart-o"></i>',
+                        'url' => ['/customers/index'],
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'Orders'),
+                        'icon' => '<i class="fa fa-bar-chart-o"></i>',
+                        'url' => ['/orders/index'],
+                    ],
 
                     [
                         'label' => Yii::t('backend', 'Main'),
