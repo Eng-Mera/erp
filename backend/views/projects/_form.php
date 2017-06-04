@@ -20,7 +20,7 @@ use yii\bootstrap\ActiveForm;
 
     <?php
     if (isset($model->logo) && !empty($model->logo))
-        echo Html::img(Yii::getAlias('@uploads') . '/' . $model->logo, [
+        echo Html::img(Yii::getAlias('@webroot') . '/uploads/' . $model->logo, [
             'width' => 100,
             'height' => 75
         ]);
