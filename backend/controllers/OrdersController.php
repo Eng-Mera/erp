@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use app\models\Customers;
 use Yii;
 use app\models\Orders;
 use backend\models\OrdersSearch;
@@ -62,13 +63,20 @@ class OrdersController extends Controller
     {
         $model = new Orders();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+        if ($model->load(Yii::$app->request->post()))
+        {
+            $customer = Customers::find()->where(['or', ['=' , 'phone1' , $model->customer_id],['=' , 'phone2' , $model->customer_id]])->one();
+            $model->user_id = Yii::$app->user->id;
+            $model->customer_id = $customer->id;
+            if ($model->save())
+            {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
+        return $this->render('create', [
+            'model' => $model,
+        ]);
+
     }
 
     /**
@@ -88,6 +96,16 @@ class OrdersController extends Controller
                 'model' => $model,
             ]);
         }
+    }
+
+    public function actionPrint($id)
+    {
+        $model = $this->findModel($id);
+        $customer = Customers::find()->where(['=','id',$model->customer_id])->one();
+        return $this->render('print',[
+            'model' => $model,
+            'customer' => $customer,
+        ]);
     }
 
     /**

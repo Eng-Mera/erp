@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use common\models\User;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Orders */
@@ -21,14 +22,23 @@ $this->params['breadcrumbs'][] = $this->title;
                 'method' => 'post',
             ],
         ]) ?>
+        <?php echo Html::a('Print', ['print','id' => $model->id], ['class' => 'btn btn-warning']) ;?>
     </p>
 
     <?php echo DetailView::widget([
         'model' => $model,
         'attributes' => [
             'id',
-            'user_id',
-            'customer_id',
+            [
+                'attribute' => 'user.username',
+                'format' => 'text',
+                'label' => 'User',
+            ],
+            [
+                'attribute' => 'customer.name',
+                'format' => 'text',
+                'label' => 'Customer',
+            ],
             'shipping_fees',
             'customer_notes',
             'product_notes',
