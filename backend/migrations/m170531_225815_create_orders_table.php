@@ -17,8 +17,8 @@ class m170531_225815_create_orders_table extends Migration
             'user_id' => $this->integer()->notNull(),
             'customer_id' => $this->integer()->notNull(),
             'shipping_fees' => $this->float()->defaultValue(0),
-            'customer_notes' => $this->string()->null(),
-            'product_notes' => $this->string()->null(),
+            'customer_notes' => $this->text()->null(),
+            'product_notes' => $this->text()->null(),
 
         ]);
 

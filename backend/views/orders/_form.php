@@ -2,6 +2,9 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+use yii\jui\AutoComplete;
+use app\models\Customers;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Orders */
@@ -14,15 +17,33 @@ use yii\bootstrap\ActiveForm;
 
     <?php echo $form->errorSummary($model); ?>
 
-    <?php echo $form->field($model, 'user_id')->textInput() ?>
+    <div class="form-group">
+        <label for="customer_id">Customer</label>
+        <?php
 
-    <?php echo $form->field($model, 'customer_id')->textInput() ?>
+            $customers = Customers::find()
+                ->select(['phone1 as value'  , 'id as id' , 'name'])
+                ->asArray()
+                ->all();
 
-    <?php echo $form->field($model, 'shipping_fees')->textInput() ?>
+            echo AutoComplete::widget([
+                'model' => $model,
+                'attribute' => 'customer_id',
+                'clientOptions' => [
+                    'source' => $customers,
+                ],
+                'options' =>[
+                    'class' => 'form-control',
+                ]
+            ]);
+        ?>
+    </div>
 
-    <?php echo $form->field($model, 'customer_notes')->textInput(['maxlength' => true]) ?>
+    <?php echo $form->field($model, 'shipping_fees')->textInput(['type' => 'number' , 'step' => '0.1' , 'min' => '0']) ?>
 
-    <?php echo $form->field($model, 'product_notes')->textInput(['maxlength' => true]) ?>
+    <?php echo $form->field($model, 'customer_notes')->textarea(['rows' => 6]) ?>
+
+    <?php echo $form->field($model, 'product_notes')->textarea(['rows' => 6]) ?>
 
     <div class="form-group">
         <?php echo Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
