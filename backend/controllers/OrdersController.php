@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use app\models\Customers;
+use app\models\OrdersProducts;
 use Yii;
 use app\models\Orders;
 use backend\models\OrdersSearch;
@@ -62,12 +63,20 @@ class OrdersController extends Controller
     public function actionCreate()
     {
         $model = new Orders();
-
         if ($model->load(Yii::$app->request->post()))
         {
             $customer = Customers::find()->where(['or', ['=' , 'phone1' , $model->customer_id],['=' , 'phone2' , $model->customer_id]])->one();
             $model->user_id = Yii::$app->user->id;
             $model->customer_id = $customer->id;
+            echo '<pre>';
+            var_dump(Yii::$app->request->post());
+            die();
+            foreach (Yii::$app->request->post()['products'] as $product)
+            {
+                $productModel = new OrdersProducts();
+                $productModel->order_id = $model->id;
+                $productModel->product_id = $product;
+            }
             if ($model->save())
             {
                 return $this->redirect(['view', 'id' => $model->id]);

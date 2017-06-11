@@ -20,7 +20,7 @@ class m170526_220433_create_products_table extends Migration
             'sale_price' => $this->integer()->defaultValue(0),
             'quantity' => $this->integer()->defaultValue(0),
             'description' => $this->text(),
-            'image' => $this->string()->notNull(),
+            'image' => $this->string()->null(),
         ]);
 
 

@@ -69,7 +69,11 @@ class ProductsController extends Controller
             $model->image = UploadedFile::getInstance($model, 'image');
             if ($model->save())
             {
-                if ($model->upload())
+                if (!empty($model->image) and $model->upload())
+                {
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+                else
                 {
                     return $this->redirect(['view', 'id' => $model->id]);
                 }

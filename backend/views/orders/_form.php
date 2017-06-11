@@ -5,6 +5,7 @@ use yii\bootstrap\ActiveForm;
 use yii\jui\AutoComplete;
 use app\models\Customers;
 use yii\helpers\ArrayHelper;
+use app\models\Products;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Orders */
@@ -37,6 +38,12 @@ use yii\helpers\ArrayHelper;
                 ]
             ]);
         ?>
+    </div>
+
+    <div class="form-group">
+
+        <?php echo Html::activeDropDownList($model, 'product', ArrayHelper::map(Products::find()->all(), 'id', 'name') , ['prompt' => 'Select Product' , 'class' => 'form-control']);  ?>
+
     </div>
 
     <?php echo $form->field($model, 'shipping_fees')->textInput(['type' => 'number' , 'step' => '0.1' , 'min' => '0']) ?>

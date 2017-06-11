@@ -21,6 +21,7 @@ use common\models\User;
  */
 class Orders extends \yii\db\ActiveRecord
 {
+    public $product;
     /**
      * @inheritdoc
      */

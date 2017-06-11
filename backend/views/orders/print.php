@@ -134,14 +134,21 @@
                             <td style="padding:0">
                                 <table class="table table-responsive table-bordered">
                                     <tr><td >Order ID</td></tr>
-                                    <tr><td >6013</td></tr>
+                                    <tr><td ><?= $model->id; ?></td></tr>
                                 </table>
                             </td>
-                            [@invoice_items]
+                            <?php
+                                echo '<td style="padding: 0">';
+                                    echo '<table class="table table-responsive table-bordered">';
+                                        echo '<tr><td >' . "test" . '</td></tr>';
+                                        echo '<tr><td>' . "203" . '</td></tr>';
+                                    echo '</table>';
+                                echo '</td>';
+                            ?>
                         </tr>
                         <tr >
                             <td colspan="[@colspan]" class="text-left">Shipping fees</td>
-                            <td class="text-center">Free</td>
+                            <td class="text-center"><?= ($model->shipping_fees == 0)? 'free' : $model->shipping_fees ?></td>
                         </tr>
                         <tr>
                             <td colspan="[@colspan]" class="text-left">Total cost</td>
