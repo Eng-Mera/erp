@@ -38,7 +38,7 @@ class Products extends \yii\db\ActiveRecord
             [['project_id', 'price', 'sale_price', 'quantity'], 'integer'],
             [['description'], 'string'],
             [['name'], 'string', 'max' => 255],
-            [['image'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg,jpeg'],
+            [['image'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg,jpeg'],
             [['project_id'], 'exist', 'skipOnError' => true, 'targetClass' => Projects::className(), 'targetAttribute' => ['project_id' => 'id']],
         ];
     }
