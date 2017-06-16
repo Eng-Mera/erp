@@ -22,7 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'method' => 'post',
             ],
         ]) ?>
-        <?php echo Html::a('Print', ['print','id' => $model->id], ['class' => 'btn btn-warning']) ;?>
+        <?php echo Html::a('Invoice', ['invoice','id' => $model->id], ['class' => 'btn btn-warning']) ;?>
     </p>
 
     <?php echo DetailView::widget([
