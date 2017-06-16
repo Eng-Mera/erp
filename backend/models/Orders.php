@@ -14,6 +14,7 @@ use common\models\User;
  * @property double $shipping_fees
  * @property string $customer_notes
  * @property string $product_notes
+ * @property double $total_amount
  *
  * @property Customers $customer
  * @property User $user
@@ -21,7 +22,8 @@ use common\models\User;
  */
 class Orders extends \yii\db\ActiveRecord
 {
-    public $product;
+    public $products = [];
+//    public $quantity = [];
     /**
      * @inheritdoc
      */

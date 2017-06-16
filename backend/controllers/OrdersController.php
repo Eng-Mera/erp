@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use app\models\Customers;
 use app\models\OrdersProducts;
+use app\models\Products;
 use Yii;
 use app\models\Orders;
 use backend\models\OrdersSearch;
@@ -65,20 +66,40 @@ class OrdersController extends Controller
         $model = new Orders();
         if ($model->load(Yii::$app->request->post()))
         {
-            $customer = Customers::find()->where(['or', ['=' , 'phone1' , $model->customer_id],['=' , 'phone2' , $model->customer_id]])->one();
-            $model->user_id = Yii::$app->user->id;
-            $model->customer_id = $customer->id;
-            echo '<pre>';
-            var_dump(Yii::$app->request->post());
-            die();
-            foreach (Yii::$app->request->post()['products'] as $product)
+            $totalAmount = 0;
+            $customerId = Customers::find()->select('id')->where(['or', ['=' , 'phone1' , $model->customer_id],['=' , 'phone2' , $model->customer_id]])->scalar();
+            if (!empty($customerId))
             {
-                $productModel = new OrdersProducts();
-                $productModel->order_id = $model->id;
-                $productModel->product_id = $product;
+                $model->customer_id = $customerId;
             }
+            $model->user_id = Yii::$app->user->id;
+
             if ($model->save())
             {
+                $products = Yii::$app->request->post()['Orders']['products'];
+                $chunks = array_chunk ( $products , 2 );
+
+                foreach ($chunks as $chunk)
+                {
+                    $quantity = $chunk[0]['quantity'];
+                    $product = $chunk[1]['product'];
+                    if (!empty($quantity) and !empty($product))
+                    {
+                        $productModel = new OrdersProducts();
+                        $productModel->order_id = $model->id;
+                        $productModel->product_id = $product;
+                        $productModel->counter = $quantity;
+                        $productModel->save();
+
+                        $productPrice = Products::find()->select('sale_price')->where( ['=' , 'id' , $product])->scalar();
+                        $totalAmount += ($productPrice * $quantity);
+                    }
+                }
+
+                $model->total_amount = $totalAmount + $model->shipping_fees;
+
+                $model->update();
+
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         }
@@ -110,10 +131,19 @@ class OrdersController extends Controller
     public function actionPrint($id)
     {
         $model = $this->findModel($id);
+        $products = [];
+
+        foreach ($model->ordersProducts as $product)
+        {
+            $productModel = Products::find()->where(['=' , 'id' , $product->product_id])->one();
+            $products[] = ["name" => $productModel->name , 'quantity' => $product->counter , 'price' => $productModel->sale_price];
+        }
+
         $customer = Customers::find()->where(['=','id',$model->customer_id])->one();
         return $this->render('print',[
             'model' => $model,
             'customer' => $customer,
+            'products' => $products,
         ]);
     }
 

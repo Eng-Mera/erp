@@ -66,6 +66,10 @@ class ProductsController extends Controller
 
         if ($model->load(Yii::$app->request->post()))
         {
+            if (empty($model->sale_price))
+            {
+                $model->sale_price = $model->price;
+            }
             $model->image = UploadedFile::getInstance($model, 'image');
             if ($model->save())
             {

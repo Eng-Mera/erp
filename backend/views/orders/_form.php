@@ -41,9 +41,42 @@ use app\models\Products;
     </div>
 
     <div class="form-group">
+        <div class="row">
+            <div class="col-md-4">
+                <label for="quantity">Quantity</label>
+                <?php echo $form->field($model,'products[][quantity]')->textInput(['type' => 'number' , 'min' => '0' , 'class'=>'form-control'])->label(false) ?>
+            </div>
+            <div class="col-md-8">
+                <label for="product"> Products </label>
+                <?php echo Html::activeDropDownList($model, 'products[][product]', ArrayHelper::map(Products::find()->all(), 'id', 'name') , ['prompt' => 'Select Product' , 'class' => 'form-control']);  ?>
+            </div>
+        </div>
+    </div>
 
-        <?php echo Html::activeDropDownList($model, 'product', ArrayHelper::map(Products::find()->all(), 'id', 'name') , ['prompt' => 'Select Product' , 'class' => 'form-control']);  ?>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-4">
+                <label for="quantity">Quantity</label>
+                <?php echo $form->field($model,'products[][quantity]')->textInput(['type' => 'number' , 'min' => '0' , 'class'=>'form-control'])->label(false) ?>
+            </div>
+            <div class="col-md-8">
+                <label for="product"> Products </label>
+                <?php echo Html::activeDropDownList($model, 'products[][product]', ArrayHelper::map(Products::find()->all(), 'id', 'name') , ['prompt' => 'Select Product' , 'class' => 'form-control']);  ?>
+            </div>
+        </div>
+    </div>
 
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-4">
+                <label for="quantity">Quantity</label>
+                <?php echo $form->field($model,'products[][quantity]')->textInput(['type' => 'number' , 'min' => '0' , 'class'=>'form-control'])->label(false) ?>
+            </div>
+            <div class="col-md-8">
+                <label for="product"> Products </label>
+                <?php echo Html::activeDropDownList($model, 'products[][product]', ArrayHelper::map(Products::find()->all(), 'id', 'name') , ['prompt' => 'Select Product' , 'class' => 'form-control']);  ?>
+            </div>
+        </div>
     </div>
 
     <?php echo $form->field($model, 'shipping_fees')->textInput(['type' => 'number' , 'step' => '0.1' , 'min' => '0']) ?>

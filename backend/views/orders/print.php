@@ -138,23 +138,28 @@
                                 </table>
                             </td>
                             <?php
-                                echo '<td style="padding: 0">';
-                                    echo '<table class="table table-responsive table-bordered">';
-                                        echo '<tr><td >' . "test" . '</td></tr>';
-                                        echo '<tr><td>' . "203" . '</td></tr>';
-                                    echo '</table>';
-                                echo '</td>';
+                                foreach ($products as $product)
+                                {
+                                    echo '<td style="padding: 0">';
+                                        echo '<table class="table table-responsive table-bordered">';
+                                            echo '<tr><td >' . $product['name'] . '#' . $product['quantity'] . '</td></tr>';
+                                            echo '<tr><td>' . ( $product['quantity'] * $product['price'] ) . '</td></tr>';
+                                        echo '</table>';
+                                    echo '</td>';
+                                }
                             ?>
                         </tr>
+                    </table>
+
+                    <table align="top" class="table table-responsive table-bordered">
                         <tr >
-                            <td colspan="[@colspan]" class="text-left">Shipping fees</td>
-                            <td class="text-center"><?= ($model->shipping_fees == 0)? 'free' : $model->shipping_fees ?></td>
+                            <td style="width: 50%" colspan="[@colspan]" class="text-left">Shipping fees</td>
+                            <td style="width: 50%" class="text-center"><?= ($model->shipping_fees == 0)? 'free' : $model->shipping_fees . ' EGP' ?></td>
                         </tr>
                         <tr>
-                            <td colspan="[@colspan]" class="text-left">Total cost</td>
-                            <td class="text-center">199 EGP</td>
+                            <td style="width: 50%" colspan="[@colspan]" class="text-left">Total cost</td>
+                            <td style="width: 50%" class="text-center"><?= $model->total_amount . ' EGP' ?></td>
                         </tr>
-
                     </table>
 
                     <table style="margin-top: 21px;" width="100%" class="table table-responsive table-bordered">
