@@ -128,8 +128,28 @@ class OrdersController extends Controller
         }
     }
 
+    public function actionInvoice($id)
+    {
+        $model = $this->findModel($id);
+        $products = [];
+
+        foreach ($model->ordersProducts as $product)
+        {
+            $productModel = Products::find()->where(['=' , 'id' , $product->product_id])->one();
+            $products[] = ["name" => $productModel->name , 'quantity' => $product->counter , 'price' => $productModel->sale_price];
+        }
+
+        $customer = Customers::find()->where(['=','id',$model->customer_id])->one();
+        return $this->render('invoice',[
+            'model' => $model,
+            'customer' => $customer,
+            'products' => $products,
+        ]);
+    }
+
     public function actionPrint($id)
     {
+        $this->layout = false;
         $model = $this->findModel($id);
         $products = [];
 
