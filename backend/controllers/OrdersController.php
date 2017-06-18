@@ -26,6 +26,11 @@ class OrdersController extends Controller
                     'delete' => ['post'],
                 ],
             ],
+            'access' => [
+                'allow' => true,
+                'actions' => ['index','view','create','update'],
+                'roles' => ['callcenter','manager','adminstrator']
+            ],
         ];
     }
 
