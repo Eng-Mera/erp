@@ -78,6 +78,11 @@ $config = [
             [
                 'allow' => true,
                 'roles' => ['manager'],
+            ],
+            [
+                'controllers' => ['orders' , 'customers'],
+                'allow' => true,
+                'roles' => ['callcenter'],
             ]
         ]
     ]

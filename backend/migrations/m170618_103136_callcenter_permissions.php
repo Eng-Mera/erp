@@ -1,21 +1,24 @@
 <?php
 
 use yii\db\Migration;
+use common\models\User;
 
 class m170618_103136_callcenter_permissions extends Migration
 {
     public function up()
     {
-        $callcenterRole = $this->auth->getRole(\common\models\User::ROLE_CALLCENTER);
+        $auth = Yii::$app->authManager;
+        $callcenterRole = $auth->getRole(User::ROLE_CALLCENTER);
 
-        $loginToBackend = $this->auth->getPermission('loginToBackend');
-        $this->auth->add($loginToBackend);
-        $this->auth->addChild($callcenterRole, $loginToBackend);
+        $loginToBackend = $auth->getPermission('loginToBackend');
+        $auth->addChild($callcenterRole, $loginToBackend);
     }
 
     public function down()
     {
-        $this->auth->remove($this->auth->getPermission('loginToBackend'));
+//        $auth = Yii::$app->authManager;
+//
+//        $this->auth->remove($auth->getPermission('loginToBackend'));
     }
 
     /*

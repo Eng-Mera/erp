@@ -5,9 +5,11 @@ namespace backend\controllers;
 use app\models\Customers;
 use app\models\OrdersProducts;
 use app\models\Products;
+use common\models\User;
 use Yii;
 use app\models\Orders;
 use backend\models\OrdersSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -26,11 +28,7 @@ class OrdersController extends Controller
                     'delete' => ['post'],
                 ],
             ],
-            'access' => [
-                'allow' => true,
-                'actions' => ['index','view','create','update'],
-                'roles' => ['callcenter','manager','adminstrator']
-            ],
+            
         ];
     }
 

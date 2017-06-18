@@ -1,22 +1,26 @@
 <?php
 
 use yii\db\Migration;
+use common\models\User;
 
 class m170618_092818_add_roles extends Migration
 {
     public function up()
     {
-	$auth = Yii::$app->authManager;
-
-	$callcenter = $auth->createRole('callcenter');
+        $auth = Yii::$app->authManager;
+    
+        $callcenter = $auth->createRole(User::ROLE_CALLCENTER);
         $auth->add($callcenter);
+        $auth->assign($callcenter, 4);
+
     }
 
     public function down()
     {
         $auth = Yii::$app->authManager;
 
-        $auth->removeAll();
+        $auth->remove($auth->getRole(User::ROLE_CALLCENTER));
+
     }
 
     /*
