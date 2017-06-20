@@ -96,9 +96,30 @@ class ProjectsController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
+        $model->scenario = 'update-image';
+        $image = $model->logo;
+        if ($model->load(Yii::$app->request->post()))
+        {
+            $instaImg = UploadedFile::getInstance($model, 'logo');
+            if (empty($instaImg))
+            {
+                $model->logo = $image;
+                if ($model->save())
+                {
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+            }
+            else
+            {
+                $model->logo = $instaImg;
+                if ($model->save())
+                {
+                    $model->upload();
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+            }
+        }
+        else {
             return $this->render('update', [
                 'model' => $model,
             ]);

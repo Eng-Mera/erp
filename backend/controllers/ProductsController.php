@@ -105,9 +105,30 @@ class ProductsController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
+        $model->scenario = 'update-image';
+        $image = $model->image;
+        if ($model->load(Yii::$app->request->post()))
+        {
+            $instaImg = UploadedFile::getInstance($model, 'image');
+            if (empty($instaImg))
+            {
+                $model->image = $image;
+                if ($model->save())
+                {
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+            }
+            else
+            {
+                $model->image = $instaImg;
+                if ($model->save())
+                {
+                    $model->upload();
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+            }
+        }
+        else {
             return $this->render('update', [
                 'model' => $model,
             ]);

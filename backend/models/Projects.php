@@ -31,7 +31,7 @@ class Projects extends \yii\db\ActiveRecord
         return [
             [['name'], 'required'],
             [['name'], 'string', 'max' => 255],
-            [['logo'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg,jpeg'],
+            [['logo'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg,jpeg', 'on'=>'update-image'],
         ];
     }
 
