@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'logo',
                 'label' => Yii::t('app', 'Image'),
-                'value' => Yii::getAlias('@uploads') . '/' . $model->logo,
+                'value' => Yii::getAlias('@backendUrl') . '/uploads/' . $model->logo,
                 'format' => ['image', ['width' => 100, 'height' => 100]]
             ],
         ],

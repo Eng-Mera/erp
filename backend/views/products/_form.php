@@ -35,7 +35,7 @@ use yii\helpers\ArrayHelper;
 
     <?php
     if (isset($model->image) && !empty($model->image))
-        echo Html::img(Yii::getAlias('@uploads') . '/' . $model->image, [
+        echo Html::img(Yii::getAlias('@backendUrl') . '/uploads/' . $model->image, [
             'width' => 100,
             'height' => 75
         ]);
