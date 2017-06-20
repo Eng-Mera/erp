@@ -42,7 +42,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
 
-            'shipping_fees',
+            [
+                'attribute' => 'shipping_fees',
+                'value' => function($model) {
+                    return (empty($model->shipping_fees))? 'Free' : $model->shipping_model;
+                }
+            ],
             'customer_notes',
             // 'product_notes',
 
