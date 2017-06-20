@@ -102,9 +102,9 @@ $bundle = BackendAsset::register($this);
                             </li>
                         </ul>
                     </li>
-                    <li>
-                        <?php echo Html::a('<i class="fa fa-cogs"></i>', ['/site/settings']) ?>
-                    </li>
+<!--                    <li>-->
+<!--                        --><?php //echo Html::a('<i class="fa fa-cogs"></i>', ['/site/settings']) ?>
+<!--                    </li>-->
                 </ul>
             </div>
         </nav>
@@ -143,11 +143,15 @@ $bundle = BackendAsset::register($this);
                         'label' => Yii::t('backend', 'Projects'),
                         'icon' => '<i class="fa fa-bar-chart-o"></i>',
                         'url' => ['/projects/index'],
+                        'visible' => Yii::$app->user->can('administrator')
+
                     ],
                     [
                         'label' => Yii::t('backend', 'Products'),
                         'icon' => '<i class="fa fa-bar-chart-o"></i>',
                         'url' => ['/products/index'],
+                        'visible' => Yii::$app->user->can('administrator')
+
                     ],
                     [
                         'label' => Yii::t('backend', 'Customers'),
@@ -162,7 +166,8 @@ $bundle = BackendAsset::register($this);
 
                     [
                         'label' => Yii::t('backend', 'Main'),
-                        'options' => ['class' => 'header']
+                        'options' => ['class' => 'header'],
+                        'visible' => Yii::$app->user->can('administrator')
                     ],
                     [
                         'label' => Yii::t('backend', 'Timeline'),
@@ -170,6 +175,8 @@ $bundle = BackendAsset::register($this);
                         'url' => ['/timeline-event/index'],
                         'badge' => TimelineEvent::find()->today()->count(),
                         'badgeBgClass' => 'label-success',
+                        'visible' => Yii::$app->user->can('administrator')
+
                     ],
                     [
                         'label' => Yii::t('backend', 'Content'),
@@ -183,11 +190,13 @@ $bundle = BackendAsset::register($this);
                             ['label' => Yii::t('backend', 'Text Widgets'), 'url' => ['/widget-text/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
                             ['label' => Yii::t('backend', 'Menu Widgets'), 'url' => ['/widget-menu/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
                             ['label' => Yii::t('backend', 'Carousel Widgets'), 'url' => ['/widget-carousel/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
-                        ]
+                        ],
+                        'visible' => Yii::$app->user->can('administrator')
                     ],
                     [
                         'label' => Yii::t('backend', 'System'),
-                        'options' => ['class' => 'header']
+                        'options' => ['class' => 'header'],
+                        'visible' => Yii::$app->user->can('administrator')
                     ],
                     [
                         'label' => Yii::t('backend', 'Users'),
@@ -227,7 +236,8 @@ $bundle = BackendAsset::register($this);
                                 'badge' => SystemLog::find()->count(),
                                 'badgeBgClass' => 'label-danger',
                             ],
-                        ]
+                        ],
+                        'visible' => Yii::$app->user->can('administrator')
                     ]
                 ]
             ]) ?>
