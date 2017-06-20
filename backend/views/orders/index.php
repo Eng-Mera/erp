@@ -24,9 +24,24 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'user_id',
-            'customer_id',
+//            'id',
+
+            [
+                'attribute' => 'user_id ',
+                'label' => 'User',
+                'value' => function($model) {
+                    return \common\models\User::find()->where('id='.$model['user_id'])->one()->username;
+                }
+            ],
+
+            [
+                'attribute' => 'customer_id ',
+                'label' => 'Customer ',
+                'value' => function($model) {
+                    return \app\models\Customers::find()->where('id='.$model['customer_id'])->one()->name;
+                }
+            ],
+
             'shipping_fees',
             'customer_notes',
             // 'product_notes',

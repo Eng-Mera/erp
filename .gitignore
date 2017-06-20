@@ -39,4 +39,4 @@ protected/runtime/*
 !protected/runtime/.gitignore
 protected/data/*.db
 themes/classic/views/
-backend/uploads
+backend/web/uploads

@@ -24,8 +24,15 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'project_id',
+//            'id',
+//            'project_id',
+            [
+                'attribute' => 'project_id ',
+                'label' => 'Project',
+                'value' => function($model) {
+                    return \app\models\Projects::find()->where('id='.$model['project_id'])->one()->name;
+                }
+            ],
             'name',
             'price',
             'sale_price',
