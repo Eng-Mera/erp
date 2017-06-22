@@ -66,6 +66,7 @@ class ProjectsController extends Controller
         if ($model->load(Yii::$app->request->post()))
         {
             $model->logo = UploadedFile::getInstance($model, 'logo');
+            $model->logo->name = $model->logo->baseName . '.' .strtolower(substr(strrchr($model->logo->name,'.'),1));
             if ($model->save())
             {
                 if ($model->upload())
@@ -101,6 +102,8 @@ class ProjectsController extends Controller
         if ($model->load(Yii::$app->request->post()))
         {
             $instaImg = UploadedFile::getInstance($model, 'logo');
+            $instaImg->name = $instaImg->baseName . '.' .strtolower(substr(strrchr($instaImg->name,'.'),1));
+
             if (empty($instaImg))
             {
                 $model->logo = $image;
