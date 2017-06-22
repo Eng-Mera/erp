@@ -124,7 +124,6 @@ class OrdersController extends Controller
 
         if ($model->load(Yii::$app->request->post()))
         {
-            $totalAmount = 0;
 //            $customerId = Customers::find()->select('id')->where(['or', ['=' , 'phone1' , $model->customer_id],['=' , 'phone2' , $model->customer_id]])->scalar();
 //            if (!empty($customerId))
 //            {
@@ -135,22 +134,33 @@ class OrdersController extends Controller
             if ($model->save()) {
 //                $products = Yii::$app->request->post()['Orders']['products'];
 //                $chunks = array_chunk($products, 2);
-//
+////
 //                foreach ($chunks as $chunk) {
 //                    $quantity = $chunk[0]['quantity'];
 //                    $product = $chunk[1]['product'];
 //                    if (!empty($quantity) and !empty($product)) {
-//                        $productModel = new OrdersProducts();
-//                        $productModel->order_id = $model->id;
-//                        $productModel->product_id = $product;
-//                        $productModel->counter = $quantity;
-//                        $productModel->save();
+////                        $orderProducts = OrdersProducts::find()->where(['and', ['=' , 'order_id' , $model->id ] , ['=' , 'product_id' , $product]])->count();
+////                        if ($orderProducts > 0)
+////                        {
+////                            $productModel = new OrdersProducts();
+////                            $productModel->order_id = $model->id;
+////                            $productModel->product_id = $product;
+////                            $productModel->counter = $quantity;
+////                            $productModel->save();
 //
-//                        $productPrice = Products::find()->select('sale_price')->where(['=', 'id', $product])->scalar();
-//                        $totalAmount += ($productPrice * $quantity);
+//                            $productPrice = Products::find()->select('sale_price')->where(['=', 'id', $product])->scalar();
+//                            $totalAmount += ($productPrice * $quantity);
+////                        }
 //                    }
 //                }
 
+                $totalAmount = 0;
+                $orderProducts = OrdersProducts::find()->where(['=' , 'order_id' , $model->id ])->all();
+                foreach ($orderProducts as $orderProduct)
+                {
+                    $productPrice = Products::find()->select('sale_price')->where(['=', 'id', $orderProduct->product_id])->scalar();
+                    $totalAmount += ($productPrice * $orderProduct->counter);
+                }
                 $model->total_amount = $totalAmount + $model->shipping_fees;
 
                 $model->update();
