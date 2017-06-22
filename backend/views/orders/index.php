@@ -42,8 +42,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
 
-            'shipping_fees',
-            'customer_notes',
+            [
+                'attribute' => 'shipping_fees',
+                'value' => function($model) {
+                    return (empty($model->shipping_fees))? 'Free' : $model->shipping_fees;
+                }
+            ],
+//            'customer_notes',
             // 'product_notes',
 
             ['class' => 'yii\grid\ActionColumn'],
