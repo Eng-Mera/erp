@@ -122,8 +122,40 @@ class OrdersController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post()))
+        {
+            $totalAmount = 0;
+//            $customerId = Customers::find()->select('id')->where(['or', ['=' , 'phone1' , $model->customer_id],['=' , 'phone2' , $model->customer_id]])->scalar();
+//            if (!empty($customerId))
+//            {
+//                $model->customer_id = $customerId;
+//            }
+//            $model->user_id = Yii::$app->user->id;
+
+            if ($model->save()) {
+//                $products = Yii::$app->request->post()['Orders']['products'];
+//                $chunks = array_chunk($products, 2);
+//
+//                foreach ($chunks as $chunk) {
+//                    $quantity = $chunk[0]['quantity'];
+//                    $product = $chunk[1]['product'];
+//                    if (!empty($quantity) and !empty($product)) {
+//                        $productModel = new OrdersProducts();
+//                        $productModel->order_id = $model->id;
+//                        $productModel->product_id = $product;
+//                        $productModel->counter = $quantity;
+//                        $productModel->save();
+//
+//                        $productPrice = Products::find()->select('sale_price')->where(['=', 'id', $product])->scalar();
+//                        $totalAmount += ($productPrice * $quantity);
+//                    }
+//                }
+
+                $model->total_amount = $totalAmount + $model->shipping_fees;
+
+                $model->update();
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         } else {
             return $this->render('update', [
                 'model' => $model,
