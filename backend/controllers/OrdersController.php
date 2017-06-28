@@ -122,6 +122,15 @@ class OrdersController extends Controller
     {
         $model = $this->findModel($id);
 
+        $productsIds = OrdersProducts::find()->select(['product_id','counter'])->where(['=' , 'order_id', $id])->all();
+        $products = [];
+        $ids = [];
+        foreach ($productsIds as $productId)
+        {
+            $ids[] = $productId->product_id;
+            $products[] = [ 'product' => Products::find()->where(['=' , 'id' , $productId->product_id])->one(), 'quantity' => $productId->counter ];
+        }
+
         if ($model->load(Yii::$app->request->post()))
         {
 //            $customerId = Customers::find()->select('id')->where(['or', ['=' , 'phone1' , $model->customer_id],['=' , 'phone2' , $model->customer_id]])->scalar();
@@ -132,28 +141,40 @@ class OrdersController extends Controller
 //            $model->user_id = Yii::$app->user->id;
 
             if ($model->save()) {
-//                $products = Yii::$app->request->post()['Orders']['products'];
-//                $chunks = array_chunk($products, 2);
-////
-//                foreach ($chunks as $chunk) {
-//                    $quantity = $chunk[0]['quantity'];
-//                    $product = $chunk[1]['product'];
-//                    if (!empty($quantity) and !empty($product)) {
-////                        $orderProducts = OrdersProducts::find()->where(['and', ['=' , 'order_id' , $model->id ] , ['=' , 'product_id' , $product]])->count();
-////                        if ($orderProducts > 0)
-////                        {
-////                            $productModel = new OrdersProducts();
-////                            $productModel->order_id = $model->id;
-////                            $productModel->product_id = $product;
-////                            $productModel->counter = $quantity;
-////                            $productModel->save();
-//
-//                            $productPrice = Products::find()->select('sale_price')->where(['=', 'id', $product])->scalar();
-//                            $totalAmount += ($productPrice * $quantity);
-////                        }
-//                    }
-//                }
-
+                $ordersProducts = Yii::$app->request->post()['Orders']['products'];
+                $chunks = array_chunk($ordersProducts, 2);
+                foreach ($chunks as $chunk)
+                {
+                    $quantity = (int)$chunk[0]['quantity'];
+                    $product = (int)$chunk[1]['product'];
+                    if (!empty($quantity) and !empty($product))
+                    {
+                        foreach ($productsIds as $productsId)
+                        {
+                            if (in_array($product , $ids))
+                            {
+                                if ($product == $productsId->product_id)
+                                {
+                                    if ($quantity != $productsId->counter)
+                                    {
+                                        $prod = OrdersProducts::find()->where(['and' , ['=' , 'order_id' , $id] , ['=' , 'product_id' , $productsId->product_id]])->one();
+                                        $prod->counter = $quantity;
+                                        $prod->update();
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                $productModel = new OrdersProducts();
+                                $productModel->order_id = $model->id;
+                                $productModel->product_id = $product;
+                                $productModel->counter = $quantity;
+                                $productModel->save();
+                                $ids[] = $productModel->product_id;
+                            }
+                        }
+                    }
+                }
                 $totalAmount = 0;
                 $orderProducts = OrdersProducts::find()->where(['=' , 'order_id' , $model->id ])->all();
                 foreach ($orderProducts as $orderProduct)
@@ -169,6 +190,7 @@ class OrdersController extends Controller
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'products' => $products,
             ]);
         }
     }
@@ -196,6 +218,8 @@ class OrdersController extends Controller
     {
         $this->layout = false;
         $model = $this->findModel($id);
+        $model->print_count = 1;
+        $model->update();
         $products = [];
 
         foreach ($model->ordersProducts as $product)

@@ -21,10 +21,14 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php echo GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'rowOptions'=> function($model){
+            if($model->print_count == 1)
+            {
+                return ['class' => 'success'];
+            }
+        },
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-//            'id',
 
             [
                 'attribute' => 'user_id ',
@@ -48,10 +52,18 @@ $this->params['breadcrumbs'][] = $this->title;
                     return (empty($model->shipping_fees))? 'Free' : $model->shipping_fees;
                 }
             ],
-//            'customer_notes',
-            // 'product_notes',
-
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{print}',
+                'buttons' => [
+                    'print' => function ($url, $model) {
+                        return Html::a('<span class="fa fa-print"></span>', ['print','id' => $model->id], ['class' => 'btn btn-warning' , 'target' => '_blank']);
+                    },
+                ]
+            ],
+            [
+                'class' => 'yii\grid\ActionColumn',
+            ],
         ],
     ]); ?>
 

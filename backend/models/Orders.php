@@ -11,6 +11,7 @@ use common\models\User;
  * @property integer $id
  * @property integer $user_id
  * @property integer $customer_id
+ * @property integer $print_count
  * @property double $shipping_fees
  * @property string $customer_notes
  * @property string $product_notes
@@ -39,7 +40,7 @@ class Orders extends \yii\db\ActiveRecord
     {
         return [
             [['user_id', 'customer_id'], 'required'],
-            [['user_id', 'customer_id'], 'integer'],
+            [['user_id', 'customer_id','print_count'], 'integer'],
             [['shipping_fees'], 'number'],
             [['customer_notes', 'product_notes'], 'string', 'max' => 255],
             [['customer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Customers::className(), 'targetAttribute' => ['customer_id' => 'id']],

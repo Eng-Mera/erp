@@ -71,8 +71,10 @@ class ProductsController extends Controller
                 $model->sale_price = $model->price;
             }
             $model->image = UploadedFile::getInstance($model, 'image');
-            $model->image->name = $model->image->baseName . '.' .strtolower(substr(strrchr($model->image->name,'.'),1));
-
+            if (!empty($model->image))
+            {
+                $model->image->name = $model->image->baseName . '.' .strtolower(substr(strrchr($model->image->name,'.'),1));
+            }
             if ($model->save())
             {
                 if (!empty($model->image) and $model->upload())
@@ -112,7 +114,10 @@ class ProductsController extends Controller
         if ($model->load(Yii::$app->request->post()))
         {
             $instaImg = UploadedFile::getInstance($model, 'image');
-            $instaImg->name = $instaImg->baseName . '.' .strtolower(substr(strrchr($instaImg->name,'.'),1));
+            if (!empty($instaImg))
+            {
+                $instaImg->name = $instaImg->baseName . '.' .strtolower(substr(strrchr($instaImg->name,'.'),1));
+            }
             if (empty($instaImg))
             {
                 $model->image = $image;
