@@ -29,16 +29,22 @@ $this->params['breadcrumbs'][] = $this->title;
             'class' => 'grid-view table-responsive'
         ],
         'columns' => [
-            'id',
             'username',
             'email:email',
+            [
+                'attribute' => 'project_id ',
+                'label' => 'Project',
+                'value' => function($model) {
+                    return ($model->project_id)? \app\models\Projects::find()->where('id=1')->one()->name : 'Not Set' ;
+                }
+            ],
             [
                 'class' => EnumColumn::className(),
                 'attribute' => 'status',
                 'enum' => User::statuses(),
                 'filter' => User::statuses()
             ],
-            'created_at:datetime',
+//            'created_at:datetime',
             'logged_at:datetime',
             // 'updated_at',
 

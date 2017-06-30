@@ -5,6 +5,7 @@ namespace backend\controllers;
 use app\models\Customers;
 use app\models\OrdersProducts;
 use app\models\Products;
+use app\models\Projects;
 use common\models\User;
 use Yii;
 use app\models\Orders;
@@ -76,6 +77,8 @@ class OrdersController extends Controller
                 $model->customer_id = $customerId;
             }
             $model->user_id = Yii::$app->user->id;
+            $model->created_at = date("Y-m-d H:i:s");
+            $model->updated_at = date("Y-m-d H:i:s");
 
             if ($model->save())
             {
@@ -99,7 +102,7 @@ class OrdersController extends Controller
                     }
                 }
 
-                $model->total_amount = $totalAmount + $model->shipping_fees;
+                $model->total_amount = $totalAmount;
 
                 $model->update();
 
@@ -121,6 +124,7 @@ class OrdersController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $model->updated_at = date("Y-m-d H:i:s");
 
         $productsIds = OrdersProducts::find()->select(['product_id','counter'])->where(['=' , 'order_id', $id])->all();
         $products = [];
@@ -182,10 +186,17 @@ class OrdersController extends Controller
                     $productPrice = Products::find()->select('sale_price')->where(['=', 'id', $orderProduct->product_id])->scalar();
                     $totalAmount += ($productPrice * $orderProduct->counter);
                 }
-                $model->total_amount = $totalAmount + $model->shipping_fees;
+                $model->total_amount = $totalAmount;
 
                 $model->update();
                 return $this->redirect(['view', 'id' => $model->id]);
+            }
+            else
+            {
+                return $this->render('update', [
+                    'model' => $model,
+                    'products' => $products,
+                ]);
             }
         } else {
             return $this->render('update', [
@@ -199,11 +210,18 @@ class OrdersController extends Controller
     {
         $model = $this->findModel($id);
         $products = [];
+        $projectId = 0;
+        $project = [];
 
         foreach ($model->ordersProducts as $product)
         {
             $productModel = Products::find()->where(['=' , 'id' , $product->product_id])->one();
+            $projectId = $productModel->project_id;
             $products[] = ["name" => $productModel->name , 'quantity' => $product->counter , 'price' => $productModel->sale_price];
+        }
+        if ($projectId != 0)
+        {
+            $project = Projects::find()->where(['=' , 'id' , $projectId])->one();
         }
 
         $customer = Customers::find()->where(['=','id',$model->customer_id])->one();
@@ -211,6 +229,7 @@ class OrdersController extends Controller
             'model' => $model,
             'customer' => $customer,
             'products' => $products,
+            'project' => $project,
         ]);
     }
 

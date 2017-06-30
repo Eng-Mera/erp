@@ -34,6 +34,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'format' => ['image', ['width' => 100, 'height' => 100]],
             ],
+            'phone',
+            [
+                'attribute' => 'acc_num',
+                'label' => 'Account Number',
+            ],
+            'city',
+            'country',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

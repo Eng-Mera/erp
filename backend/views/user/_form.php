@@ -3,6 +3,8 @@
 use common\models\User;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+use app\models\Projects;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\UserForm */
@@ -19,6 +21,13 @@ use yii\bootstrap\ActiveForm;
         <?php echo $form->field($model, 'password')->passwordInput() ?>
         <?php echo $form->field($model, 'status')->dropDownList(User::statuses()) ?>
         <?php echo $form->field($model, 'roles')->checkboxList($roles) ?>
+
+        <div class="form-group">
+
+            <?php echo Html::activeDropDownList($model, 'project_id', ArrayHelper::map(Projects::find()->all(), 'id', 'name') , ['prompt' => 'Select Project' , 'class' => 'form-control']);  ?>
+
+        </div>
+
         <div class="form-group">
             <?php echo Html::submitButton(Yii::t('backend', 'Save'), ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
         </div>

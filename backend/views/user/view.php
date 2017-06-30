@@ -31,6 +31,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'auth_key',
             'email:email',
             'status',
+            [
+                'attribute' => 'project.name',
+                'format' => 'text',
+                'label' => 'Project',
+            ],
             'created_at:datetime',
             'updated_at:datetime',
             'logged_at:datetime',

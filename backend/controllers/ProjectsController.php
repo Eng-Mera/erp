@@ -66,7 +66,15 @@ class ProjectsController extends Controller
         if ($model->load(Yii::$app->request->post()))
         {
             $model->logo = UploadedFile::getInstance($model, 'logo');
-            $model->logo->name = $model->logo->baseName . '.' .strtolower(substr(strrchr($model->logo->name,'.'),1));
+            if (!empty($model->logo))
+            {
+                $model->logo->name = $model->logo->baseName . '.' .strtolower(substr(strrchr($model->logo->name,'.'),1));
+            }
+            $model->logo_mockup = UploadedFile::getInstance($model, 'logo_mockup');
+            if (!empty($model->logo_mockup))
+            {
+                $model->logo_mockup->name = $model->logo_mockup->baseName . '.' .strtolower(substr(strrchr($model->logo_mockup->name,'.'),1));
+            }
             if ($model->save())
             {
                 if ($model->upload())
@@ -99,27 +107,59 @@ class ProjectsController extends Controller
 
         $model->scenario = 'update-image';
         $image = $model->logo;
+        $mockup = $model->logo_mockup;
         if ($model->load(Yii::$app->request->post()))
         {
             $instaImg = UploadedFile::getInstance($model, 'logo');
-            $instaImg->name = $instaImg->baseName . '.' .strtolower(substr(strrchr($instaImg->name,'.'),1));
+            if (!empty($instaImg))
+            {
+                $instaImg->name = $instaImg->baseName . '.' .strtolower(substr(strrchr($instaImg->name,'.'),1));
+            }
+            $instaMockup = UploadedFile::getInstance($model, 'logo_mockup');
+            if (!empty($instaMockup))
+            {
+                $instaMockup->name = $instaMockup->baseName . '.' .strtolower(substr(strrchr($instaMockup->name,'.'),1));
+            }
 
-            if (empty($instaImg))
+            if (empty($instaImg) and empty($instaMockup))
             {
                 $model->logo = $image;
+                $model->logo_mockup = $mockup;
                 if ($model->save())
                 {
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+            }
+            elseif (empty($instaImg) and !empty($instaMockup))
+            {
+                $model->logo = $image;
+                $model->logo_mockup = $instaMockup;
+                if ($model->save())
+                {
+                    $model->upload();
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+            }
+            elseif (!empty($instaImg) and empty($instaMockup))
+            {
+                $model->logo = $instaImg;
+                $model->logo_mockup = $mockup;
+                if ($model->save())
+                {
+                    $model->upload();
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
             }
             else
             {
                 $model->logo = $instaImg;
+                $model->logo_mockup = $instaMockup;
                 if ($model->save())
                 {
                     $model->upload();
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
+
             }
         }
         else {

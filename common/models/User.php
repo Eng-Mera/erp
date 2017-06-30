@@ -1,6 +1,7 @@
 <?php
 namespace common\models;
 
+use app\models\Projects;
 use common\commands\AddToTimelineCommand;
 use common\models\query\UserQuery;
 use Yii;
@@ -23,6 +24,7 @@ use yii\web\IdentityInterface;
  * @property string $oauth_client_user_id
  * @property string $publicIdentity
  * @property integer $status
+ * @property integer $project_id
  * @property integer $created_at
  * @property integer $updated_at
  * @property integer $logged_at
@@ -111,7 +113,8 @@ class User extends ActiveRecord implements IdentityInterface
             [['username', 'email'], 'unique'],
             ['status', 'default', 'value' => self::STATUS_NOT_ACTIVE],
             ['status', 'in', 'range' => array_keys(self::statuses())],
-            [['username'], 'filter', 'filter' => '\yii\helpers\Html::encode']
+            [['username'], 'filter', 'filter' => '\yii\helpers\Html::encode'],
+            [['project_id'], 'exist', 'skipOnError' => true, 'targetClass' => Projects::className(), 'targetAttribute' => ['project_id' => 'id']],
         ];
     }
 
@@ -128,6 +131,7 @@ class User extends ActiveRecord implements IdentityInterface
             'created_at' => Yii::t('common', 'Created at'),
             'updated_at' => Yii::t('common', 'Updated at'),
             'logged_at' => Yii::t('common', 'Last login'),
+            'project_id' => Yii::t('common', 'Project'),
         ];
     }
 
@@ -245,6 +249,14 @@ class User extends ActiveRecord implements IdentityInterface
             self::STATUS_ACTIVE => Yii::t('common', 'Active'),
             self::STATUS_DELETED => Yii::t('common', 'Deleted')
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProject()
+    {
+        return $this->hasOne(Projects::className(), ['id' => 'project_id']);
     }
 
     /**

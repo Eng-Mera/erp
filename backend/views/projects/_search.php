@@ -21,6 +21,14 @@ use yii\bootstrap\ActiveForm;
 
     <?php echo $form->field($model, 'logo') ?>
 
+    <?php echo $form->field($model, 'phone') ?>
+
+    <?php echo $form->field($model, 'acc_num') ?>
+
+    <?php echo $form->field($model, 'city') ?>
+
+    <?php echo $form->field($model, 'country') ?>
+
     <div class="form-group">
         <?php echo Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
         <?php echo Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>

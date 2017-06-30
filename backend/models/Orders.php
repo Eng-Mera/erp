@@ -16,6 +16,8 @@ use common\models\User;
  * @property string $customer_notes
  * @property string $product_notes
  * @property double $total_amount
+ * @property string $created_at
+ * @property string $updated_at
  *
  * @property Customers $customer
  * @property User $user

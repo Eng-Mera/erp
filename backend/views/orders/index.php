@@ -46,12 +46,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
 
+            'total_amount',
+
             [
                 'attribute' => 'shipping_fees',
                 'value' => function($model) {
                     return (empty($model->shipping_fees))? 'Free' : $model->shipping_fees;
                 }
             ],
+            [
+                'attribute' => 'customer.gov',
+            ],
+            'created_at',
             [
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{print}',

@@ -1,6 +1,7 @@
 <?php
 namespace backend\models;
 
+use app\models\Projects;
 use common\models\User;
 use yii\base\Exception;
 use yii\base\Model;
@@ -17,6 +18,7 @@ class UserForm extends Model
     public $password;
     public $status;
     public $roles;
+    public $project_id;
 
     private $model;
 
@@ -54,6 +56,8 @@ class UserForm extends Model
                     'name'
                 )]
             ],
+            [['project_id'], 'exist', 'skipOnError' => true, 'targetClass' => Projects::className(), 'targetAttribute' => ['project_id' => 'id']],
+
         ];
     }
 
@@ -67,7 +71,8 @@ class UserForm extends Model
             'email' => Yii::t('common', 'Email'),
             'status' => Yii::t('common', 'Status'),
             'password' => Yii::t('common', 'Password'),
-            'roles' => Yii::t('common', 'Roles')
+            'roles' => Yii::t('common', 'Roles'),
+            'project_id' => Yii::t('common', 'Project'),
         ];
     }
 
@@ -80,6 +85,7 @@ class UserForm extends Model
         $this->username = $model->username;
         $this->email = $model->email;
         $this->status = $model->status;
+        $this->project_id = $model->project_id;
         $this->model = $model;
         $this->roles = ArrayHelper::getColumn(
             Yii::$app->authManager->getRolesByUser($model->getId()),
@@ -112,6 +118,7 @@ class UserForm extends Model
             $model->username = $this->username;
             $model->email = $this->email;
             $model->status = $this->status;
+            $model->project_id = $this->project_id;
             if ($this->password) {
                 $model->setPassword($this->password);
             }

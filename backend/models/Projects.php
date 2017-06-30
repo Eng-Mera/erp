@@ -10,6 +10,11 @@ use Yii;
  * @property integer $id
  * @property string $name
  * @property string $logo
+ * @property string $logo_mockup
+ * @property string $phone
+ * @property string $acc_num
+ * @property string $city
+ * @property string $country
  *
  * @property Products[] $products
  */
@@ -30,8 +35,10 @@ class Projects extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'required'],
+            [['phone','acc_num','city','country'], 'safe'],
             [['name'], 'string', 'max' => 255],
-            [['logo'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg,jpeg', 'on'=>'update-image'],
+            [['logo'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg,jpeg', 'on'=>'update-image'],
+            [['logo_mockup'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg,jpeg', 'on'=>'update-image'],
         ];
     }
 
@@ -58,10 +65,29 @@ class Projects extends \yii\db\ActiveRecord
     public function upload()
     {
         if ($this->validate()) {
-            if ($this->logo->saveAs(Yii::getAlias('@uploadsDir') . '/' . $this->logo->baseName . '.' . $this->logo->extension))
+            if (!empty($this->logo) and (is_object($this->logo)) and !empty($this->logo_mockup) and (is_object($this->logo_mockup)))
             {
-                return true;
+                if (($this->logo->saveAs(Yii::getAlias('@uploadsDir') . '/' . $this->logo->baseName . '.' . $this->logo->extension)) and ($this->logo_mockup->saveAs(Yii::getAlias('@uploadsDir') . '/' . $this->logo_mockup->baseName . '.' . $this->logo_mockup->extension)))
+                {
+                    return true;
+                }
+
             }
+            elseif (!empty($this->logo) and (is_object($this->logo)))
+            {
+                if ($this->logo->saveAs(Yii::getAlias('@uploadsDir') . '/' . $this->logo->baseName . '.' . $this->logo->extension))
+                {
+                    return true;
+                }
+            }
+            elseif (!empty($this->logo_mockup) and (is_object($this->logo_mockup)))
+            {
+                if ($this->logo_mockup->saveAs(Yii::getAlias('@uploadsDir') . '/' . $this->logo_mockup->baseName . '.' . $this->logo_mockup->extension))
+                {
+                    return true;
+                }
+            }
+
             return false;
         } else {
             return false;

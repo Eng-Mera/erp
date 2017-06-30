@@ -43,8 +43,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'shipping_fees',
                 'value' => (empty($model->shipping_fees))? 'Free' : $model->shipping_fees,
             ],
+
             'customer_notes',
             'product_notes',
+
+            'created_at',
+            'updated_at',
         ],
     ]) ?>
 

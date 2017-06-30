@@ -19,8 +19,8 @@ class OrdersSearch extends Orders
     {
         return [
             [['id', 'user_id', 'customer_id'], 'integer'],
-            [['shipping_fees'], 'number'],
-            [['customer_notes', 'product_notes'], 'safe'],
+            [['shipping_fees' , 'total_amount'], 'number'],
+            [['customer_notes', 'product_notes','created_at'], 'safe'],
         ];
     }
 
@@ -57,10 +57,12 @@ class OrdersSearch extends Orders
             'user_id' => $this->user_id,
             'customer_id' => $this->customer_id,
             'shipping_fees' => $this->shipping_fees,
+            'total_amount' => $this->total_amount,
         ]);
 
         $query->andFilterWhere(['like', 'customer_notes', $this->customer_notes])
-            ->andFilterWhere(['like', 'product_notes', $this->product_notes]);
+            ->andFilterWhere(['like', 'product_notes', $this->product_notes])
+            ->andFilterWhere(['like', "(date_format( FROM_UNIXTIME(`created_at` ), '%Y-%m-%d %h:%i:%s %p' ))", $this->created_at]);
 
         return $dataProvider;
     }

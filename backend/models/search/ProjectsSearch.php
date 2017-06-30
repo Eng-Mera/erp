@@ -19,7 +19,7 @@ class ProjectsSearch extends Projects
     {
         return [
             [['id'], 'integer'],
-            [['name', 'logo'], 'safe'],
+            [['name', 'logo' , 'phone','acc_num','city','country'], 'safe'],
         ];
     }
 
@@ -56,7 +56,11 @@ class ProjectsSearch extends Projects
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'logo', $this->logo]);
+            ->andFilterWhere(['like', 'logo', $this->logo])
+            ->andFilterWhere(['like', 'acc_num', $this->acc_num])
+            ->andFilterWhere(['like', 'phone', $this->phone])
+            ->andFilterWhere(['like', 'city', $this->city])
+            ->andFilterWhere(['like', 'country', $this->country]);
 
         return $dataProvider;
     }

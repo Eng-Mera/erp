@@ -25,7 +25,7 @@
                                 <span>Shipper</span>
                             </td>
                             <td style="padding: 5px; font-size:13px;">
-                                <p>Letoile</p>
+                                <p>Beesklta</p>
                             </td>
                         </tr>
                     </table>
@@ -35,7 +35,7 @@
                             <td style="padding: 5px; font-size:13px;" width="130">
                                 <span>Account number</span>
                             </td>
-                            <td style="padding: 5px; font-size:13px;"> 50001</td>
+                            <td style="padding: 5px; font-size:13px;"> <?= (!empty($project))? $project->acc_num : ''; ?></td>
                         </tr>
                     </table>
 
@@ -45,7 +45,7 @@
                                 <span>Company</span>
                             </td>
                             <td style="padding: 5px; font-size:13px;">
-                                <p>Letoile For Accessories</p>
+                                <p><?= (!empty($project))? $project->name : '';  ?></p>
                             </td>
                         </tr>
                     </table>
@@ -54,11 +54,11 @@
                         <tr>
                             <td style="padding: 5px; font-size:13px;" width="50%">
                                 <span>City:</span>
-                                Cairo
+                                <?= (!empty($project) and !empty($project->city))? $project->city : 'Cairo'; ?>
                             </td>
                             <td style="padding: 5px; font-size:13px;" width="50%">
                                 <span>Country:</span>
-                                Egypt
+                                <?= (!empty($project) and !empty($project->country))? $project->country : 'Egypt'; ?>
                             </td>
                         </tr>
                     </table>
@@ -158,13 +158,17 @@
                     </table>
 
                     <table align="top" class="table table-responsive table-bordered">
+                        <tr>
+                            <td style="width: 50%" colspan="[@colspan]" class="text-left">Cost</td>
+                            <td style="width: 50%" class="text-center"><?= $model->total_amount . ' EGP' ?></td>
+                        </tr>
                         <tr >
                             <td style="width: 50%" colspan="[@colspan]" class="text-left">Shipping fees</td>
                             <td style="width: 50%" class="text-center"><?= ($model->shipping_fees == 0)? 'free' : $model->shipping_fees . ' EGP' ?></td>
                         </tr>
                         <tr>
                             <td style="width: 50%" colspan="[@colspan]" class="text-left">Total cost</td>
-                            <td style="width: 50%" class="text-center"><?= $model->total_amount . ' EGP' ?></td>
+                            <td style="width: 50%" class="text-center"><?= $model->total_amount + $model->shipping_fees . ' EGP' ?></td>
                         </tr>
                     </table>
 

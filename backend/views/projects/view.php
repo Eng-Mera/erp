@@ -28,10 +28,23 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'name',
+            'phone',
+            [
+                'attribute' => 'acc_num',
+                'label' => 'Account Number',
+            ],
+            'city',
+            'country',
             [
                 'attribute' => 'logo',
                 'label' => Yii::t('app', 'Image'),
                 'value' => Yii::getAlias('@backendUrl') . '/uploads/' . $model->logo,
+                'format' => ['image', ['width' => 100, 'height' => 100]]
+            ],
+            [
+                'attribute' => 'logo_mockup',
+                'label' => Yii::t('app', 'Mockup'),
+                'value' => Yii::getAlias('@backendUrl') . '/uploads/' . $model->logo_mockup,
                 'format' => ['image', ['width' => 100, 'height' => 100]]
             ],
         ],

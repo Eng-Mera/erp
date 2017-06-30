@@ -17,6 +17,14 @@ use yii\helpers\Url;
 
     <?php echo $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
+    <?php echo $form->field($model, 'phone')->textInput(['maxlength' => true]) ?>
+
+    <?php echo $form->field($model, 'acc_num')->textInput(['maxlength' => true]) ?>
+
+    <?php echo $form->field($model, 'city')->textInput(['maxlength' => true]) ?>
+
+    <?php echo $form->field($model, 'country')->textInput(['maxlength' => true]) ?>
+
     <?= $form->field($model, 'logo')->fileInput(['multiple' => true, 'accept' => 'image/*']) ?>
 
     <?php
@@ -24,6 +32,19 @@ use yii\helpers\Url;
         if (isset($model->logo) && !empty($model->logo))
         {
             echo Html::img( Yii::getAlias('@backendUrl') . '/uploads/' . $model->logo, [
+                'width' => 100,
+                'height' => 75
+            ]);
+        }
+    ?>
+
+    <?= $form->field($model, 'logo_mockup')->fileInput(['multiple' => true, 'accept' => 'image/*']) ?>
+
+    <?php
+
+        if (isset($model->logo_mockup) && !empty($model->logo_mockup))
+        {
+            echo Html::img( Yii::getAlias('@backendUrl') . '/uploads/' . $model->logo_mockup, [
                 'width' => 100,
                 'height' => 75
             ]);

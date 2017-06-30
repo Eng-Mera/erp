@@ -19,7 +19,7 @@ $bundle = BackendAsset::register($this);
 <div class="wrapper">
     <!-- header logo: style can be found in header.less -->
     <header class="main-header">
-        <a href="<?php echo Yii::$app->urlManagerFrontend->createAbsoluteUrl('/') ?>" class="logo">
+        <a href="<?php echo Yii::$app->urlManagerBackend->createAbsoluteUrl('/') ?>" class="logo">
             <!-- Add the class icon to your logo image or logo icon to add the margining -->
             <?php echo Yii::$app->name ?>
         </a>
@@ -202,6 +202,12 @@ $bundle = BackendAsset::register($this);
                         'label' => Yii::t('backend', 'Users'),
                         'icon' => '<i class="fa fa-users"></i>',
                         'url' => ['/user/index'],
+                        'visible' => Yii::$app->user->can('administrator')
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'Reports'),
+                        'icon' => '<i class="fa fa-line-chart"></i>',
+                        'url' => ['/reports/index'],
                         'visible' => Yii::$app->user->can('administrator')
                     ],
                     [
