@@ -264,6 +264,25 @@ class OrdersController extends Controller
         ]);
     }
 
+    public function actionCorrecting()
+    {
+        $orders = Orders::find()->all();
+        foreach ($orders as $order)
+        {
+            $totalAmount = 0;
+            $orderProducts = OrdersProducts::find()->where(['=' , 'order_id' , $order->id ])->all();
+            foreach ($orderProducts as $orderProduct)
+            {
+                $productPrice = Products::find()->select('sale_price')->where(['=', 'id', $orderProduct->product_id])->scalar();
+                $totalAmount += ($productPrice * $orderProduct->counter);
+            }
+            $order->total_amount = $totalAmount;
+
+            $order->update();
+        }
+        return true;
+    }
+
     /**
      * Deletes an existing Orders model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
