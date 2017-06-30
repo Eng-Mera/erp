@@ -240,11 +240,19 @@ class OrdersController extends Controller
         $model->print_count = 1;
         $model->update();
         $products = [];
+        $projectId = 0;
+        $project = [];
 
         foreach ($model->ordersProducts as $product)
         {
             $productModel = Products::find()->where(['=' , 'id' , $product->product_id])->one();
+            $projectId = $productModel->project_id;
             $products[] = ["name" => $productModel->name , 'quantity' => $product->counter , 'price' => $productModel->sale_price];
+        }
+
+        if ($projectId != 0)
+        {
+            $project = Projects::find()->where(['=' , 'id' , $projectId])->one();
         }
 
         $customer = Customers::find()->where(['=','id',$model->customer_id])->one();
@@ -252,6 +260,7 @@ class OrdersController extends Controller
             'model' => $model,
             'customer' => $customer,
             'products' => $products,
+            'project' => $project,
         ]);
     }
 
