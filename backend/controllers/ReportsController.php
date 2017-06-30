@@ -16,7 +16,7 @@ class ReportsController extends \yii\web\Controller
         $orders = Orders::find()->all();
         $allOrdersCounter = count($orders);
 
-        $todayOrders = Orders::find()->where(['=','created_at',date('Y-m-d H:i:s')])->all();
+        $todayOrders = Orders::find()->where(['=','created_at',date('Y-m-d')])->all();
         $todayOrdersCounter = count($todayOrders);
 
         foreach ($orders as $order)
