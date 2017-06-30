@@ -24,7 +24,7 @@
 
             <div class="info-box-content">
                 <span class="info-box-text">Today's Orders</span>
-                <span class="info-box-number">41,410</span>
+                <span class="info-box-number"><?= $todayOrdersCounter ?></span>
 
                 <div class="progress">
                     <div class="progress-bar" style="width: 70%"></div>
@@ -43,7 +43,7 @@
 
             <div class="info-box-content">
                 <span class="info-box-text">Top Project</span>
-                <span class="info-box-number">41,410</span>
+                <span class="info-box-number"></span>
 
                 <div class="progress">
                     <div class="progress-bar" style="width: 70%"></div>
@@ -79,9 +79,9 @@
         <!-- small box -->
         <div class="small-box bg-green">
             <div class="inner">
-                <h3><?= $totalAmount + $totalShippingFees ?><sup style="font-size: 20px">LE</sup></h3>
+                <h3><?= $todayTotalAmount  ?><sup style="font-size: 20px">LE</sup></h3>
 
-                <p>COD</p>
+                <p>Today's Orders </p>
             </div>
             <div class="icon">
                 <i class="fa fa-money"></i>
@@ -95,7 +95,7 @@
         <!-- small box -->
         <div class="small-box bg-yellow">
             <div class="inner">
-                <h3><?= $totalAmount + $totalShippingFees ?> <sup style="font-size: 20px">LE</sup></h3>
+                <h3><?= '' ?> <sup style="font-size: 20px">LE</sup></h3>
 
                 <p>Project's Orders</p>
             </div>
@@ -129,7 +129,7 @@
         <!-- small box -->
         <div class="small-box bg-green">
             <div class="inner">
-                <h3><?= $totalAmount + $totalShippingFees ?><sup style="font-size: 20px">LE</sup></h3>
+                <h3><?= $todayTotalAmount + $todayShippingFees ?><sup style="font-size: 20px">LE</sup></h3>
 
                 <p>COD</p>
             </div>
