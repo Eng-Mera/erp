@@ -34,7 +34,15 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'address2',
             // 'city',
             // 'gov',
-
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{orders}',
+                'buttons' => [
+                    'orders' => function ($url, $model) {
+                        return Html::a('<span class="fa fa-shopping-basket"></span>', ['orders','id' => $model->id], ['class' => 'btn bg-maroon' , 'target' => '_blank']);
+                    },
+                ]
+            ],
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

@@ -4,20 +4,15 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel backend\models\OrdersSearch */
+/* @var $searchModel backend\models\CustomersSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Orders';
+$this->title = 'Customer Orders';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="orders-index">
+<div class="customers-index">
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <p>
-        <?php echo Html::a('Create Orders', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
     <?php echo GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -63,7 +58,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'template' => '{print}',
                 'buttons' => [
                     'print' => function ($url, $model) {
-                        return Html::a('<span class="fa fa-print"></span>', ['print','id' => $model->id], ['class' => 'btn bg-purple' , 'target' => '_blank']);
+                        return Html::a('<span class="fa fa-print"></span>', ['print','id' => $model->id], ['class' => 'btn btn-warning' , 'target' => '_blank']);
                     },
                 ]
             ],
@@ -72,5 +67,6 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]); ?>
+
 
 </div>

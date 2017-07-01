@@ -2,6 +2,8 @@
 
 namespace backend\controllers;
 
+use app\models\Orders;
+use backend\models\OrdersSearch;
 use Yii;
 use app\models\Customers;
 use backend\models\CustomersSearch;
@@ -39,6 +41,21 @@ class CustomersController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+    }
+
+    public function actionOrders($id)
+    {
+        if (!empty($id))
+        {
+            $searchModel = new OrdersSearch();
+            $data = ['OrdersSearch' => ['customer_id' => $id]];
+            $dataProvider = $searchModel->search($data);
+
+            return $this->render('orders', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        }
     }
 
     /**
