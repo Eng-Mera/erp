@@ -37,6 +37,7 @@ class Customers extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'phone1', 'address1', 'city', 'gov'], 'required'],
+            [['phone1'] , 'unique'],
             ['email','email'],
             [['name', 'phone1', 'phone2', 'email', 'facebook', 'address1', 'address2', 'city', 'gov'], 'string', 'max' => 255],
         ];
