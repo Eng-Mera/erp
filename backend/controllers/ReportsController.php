@@ -3,6 +3,8 @@
 namespace backend\controllers;
 
 use app\models\Orders;
+use common\models\User;
+use yii\data\ActiveDataProvider;
 
 class ReportsController extends \yii\web\Controller
 {
@@ -39,6 +41,38 @@ class ReportsController extends \yii\web\Controller
             'todayTotalAmount' => $todayTotalAmount,
             'todayShippingFees' => $todayShippingFees,
 
+        ]);
+    }
+
+    public function getRoleUsers($role)
+    {
+        $connection = \Yii::$app->db;
+        $connection->open();
+
+        $command = $connection->createCommand("SELECT * FROM `rbac_auth_assignment` INNER JOIN `user` ON `rbac_auth_assignment`.`user_id` = `user`.`id`".
+            " WHERE `rbac_auth_assignment`.`item_name` = '" . $role . "';");
+        $users = $command->queryAll();
+        $connection->close();
+
+        return $users;
+    }
+
+    public function actionTarget()
+    {
+//        $query = $this->getRoleUsers('callcenter');
+
+//        $sql = "SELECT * FROM `rbac_auth_assignment` INNER JOIN `user` ON `rbac_auth_assignment`.`user_id` = `user`.`id` WHERE `rbac_auth_assignment`.`item_name` = 'callcenter'";
+
+//        $users = User::findBySql($sql);
+        $users = User::find();
+
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $users,
+        ]);
+
+        return $this->render('target',[
+            'dataProvider' => $dataProvider
         ]);
     }
 
