@@ -10,7 +10,9 @@ use yii\grid\GridView;
 $this->title = 'Customer Orders';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<?php
 
+?>
 <div class="target-index">
 
     <?php echo GridView::widget([

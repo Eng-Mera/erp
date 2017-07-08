@@ -137,20 +137,16 @@ class OrdersController extends Controller
 
         if ($model->load(Yii::$app->request->post()))
         {
-//            $customerId = Customers::find()->select('id')->where(['or', ['=' , 'phone1' , $model->customer_id],['=' , 'phone2' , $model->customer_id]])->scalar();
-//            if (!empty($customerId))
-//            {
-//                $model->customer_id = $customerId;
-//            }
-//            $model->user_id = Yii::$app->user->id;
-
             if ($model->save()) {
                 $ordersProducts = Yii::$app->request->post()['Orders']['products'];
                 $chunks = array_chunk($ordersProducts, 2);
+
+                $chunksProductIds = [];
                 foreach ($chunks as $chunk)
                 {
                     $quantity = (int)$chunk[0]['quantity'];
                     $product = (int)$chunk[1]['product'];
+                    $chunksProductIds[] = $product;
                     if (!empty($quantity) and !empty($product))
                     {
                         foreach ($productsIds as $productsId)
@@ -179,6 +175,17 @@ class OrdersController extends Controller
                         }
                     }
                 }
+                $chunksProductIds = array_filter($chunksProductIds);
+                foreach ($ids as $prodId)
+                {
+                    if (!in_array($prodId , $chunksProductIds))
+                    {
+                        $prodModel = OrdersProducts::find()->where(['and', ['=','order_id', $id] , ['=','product_id' , $prodId]])->one();
+                        $prodModel->delete();
+                    }
+                }
+
+
                 $totalAmount = 0;
                 $orderProducts = OrdersProducts::find()->where(['=' , 'order_id' , $model->id ])->all();
                 foreach ($orderProducts as $orderProduct)
