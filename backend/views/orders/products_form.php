@@ -74,12 +74,12 @@ use app\models\Products;
         {
     ?>
             <li style="display: inline-block;">
-                <input type="checkbox" name="products[][product]" id="<?= "prod". $product->id ?>" />
+                <input type="checkbox" name="Products[][product]" id="<?= "prod". $product->id ?>" value="<?= $product->id ?>"/>
                 <label for="<?= "prod". $product->id ?>">
                     <img src="<?= Yii::getAlias('@backendUrl') . '/uploads/' .  $product->image; ?>" alt="<?= $product->name; ?>">
                 </label>
                 <div class="col-md-5">
-                    <input type="number" name="products[][quantity]" min="0" class="form-control">
+                    <input type="number" name="Products[][quantity]" min="0" class="form-control">
                 </div>
                     <?= $product->name; ?>
             </li>
@@ -87,89 +87,3 @@ use app\models\Products;
         }
     ?>
 </ul>
-    <?php
-
-if (!($model->isNewRecord))
-{
-    foreach ($products as $product)
-    {
-        ?>
-        <div class="form-group">
-            <div class="row">
-                <div class="col-md-4">
-                    <label for="quantity">Quantity</label>
-                    <?php echo $form->field($model,'products[][quantity]')->textInput(['type' => 'number' , 'min' => '0' , 'class'=>'form-control','value' => $product['quantity']])->label(false) ?>
-                </div>
-                <div class="col-md-8">
-                    <label for="product"> Products </label>
-                    <?php echo Html::activeDropDownList($model, 'products[][product]', ArrayHelper::map(Products::find()->all(), 'id', 'name') , ['prompt' => 'Select Product' , 'class' => 'form-control', 'value' => $product['product']->id]);  ?>
-                </div>
-            </div>
-        </div>
-        <?php
-    }
-    if (count($products) <= 3)
-    {
-        for ( $i = 0 ; $i < (3 - count($products)) ; $i++)
-        {
-            ?>
-            <div class="form-group">
-                <div class="row">
-                    <div class="col-md-4">
-                        <label for="quantity">Quantity</label>
-                        <?php echo $form->field($model,'products[][quantity]')->textInput(['type' => 'number' , 'min' => '0' , 'class'=>'form-control'])->label(false) ?>
-                    </div>
-                    <div class="col-md-8">
-                        <label for="product"> Products </label>
-                        <?php echo Html::activeDropDownList($model, 'products[][product]', ArrayHelper::map(Products::find()->all(), 'id', 'name') , ['prompt' => 'Select Product' , 'class' => 'form-control']);  ?>
-                    </div>
-                </div>
-            </div>
-            <?php
-        }
-    }
-}
-else
-{
-    ?>
-    <div class="form-group">
-        <div class="row">
-            <div class="col-md-4">
-                <label for="quantity">Quantity</label>
-                <?php echo $form->field($model,'products[][quantity]')->textInput(['type' => 'number' , 'min' => '0' , 'class'=>'form-control'])->label(false) ?>
-            </div>
-            <div class="col-md-8">
-                <label for="product"> Products </label>
-                <?php echo Html::activeDropDownList($model, 'products[][product]', ArrayHelper::map(Products::find()->all(), 'id', 'name') , ['prompt' => 'Select Product' , 'class' => 'form-control']);  ?>
-            </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="row">
-            <div class="col-md-4">
-                <label for="quantity">Quantity</label>
-                <?php echo $form->field($model,'products[][quantity]')->textInput(['type' => 'number' , 'min' => '0' , 'class'=>'form-control'])->label(false) ?>
-            </div>
-            <div class="col-md-8">
-                <label for="product"> Products </label>
-                <?php echo Html::activeDropDownList($model, 'products[][product]', ArrayHelper::map(Products::find()->all(), 'id', 'name') , ['prompt' => 'Select Product' , 'class' => 'form-control']);  ?>
-            </div>
-        </div>
-    </div>
-    <?php
-}
-
-?>
-
-<div class="form-group">
-    <div class="row">
-        <div class="col-md-4">
-            <label for="quantity">Quantity</label>
-            <?php echo $form->field($model,'products[][quantity]')->textInput(['type' => 'number' , 'min' => '0' , 'class'=>'form-control'])->label(false) ?>
-        </div>
-        <div class="col-md-8">
-            <label for="product"> Products </label>
-            <?php echo Html::activeDropDownList($model, 'products[][product]', ArrayHelper::map(Products::find()->all(), 'id', 'name') , ['prompt' => 'Select Product' , 'class' => 'form-control']);  ?>
-        </div>
-    </div>
-</div>

@@ -69,8 +69,15 @@ class OrdersController extends Controller
     {
         $model = new Orders();
         $customer = new Customers();
+        $allProducts = Products::find()->all();
         if ($model->load(Yii::$app->request->post()))
         {
+
+            echo '<pre>';
+            var_dump(Yii::$app->request->post()['Orders']);
+            var_dump(Yii::$app->request->post()['Products']);
+            var_dump(Yii::$app->request->post()['Customers']);
+            die();
             $totalAmount = 0;
             $customerId = Customers::find()->select('id')->where(['or', ['=' , 'phone1' , $model->customer_id],['=' , 'phone2' , $model->customer_id]])->scalar();
             if (!empty($customerId))
@@ -110,7 +117,6 @@ class OrdersController extends Controller
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         }
-        $allProducts = Products::find()->all();
         return $this->render('create', [
             'model' => $model,
             'customer' => $customer,
