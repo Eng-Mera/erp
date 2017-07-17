@@ -68,6 +68,7 @@ class OrdersController extends Controller
     public function actionCreate()
     {
         $model = new Orders();
+        $customer = new Customers();
         if ($model->load(Yii::$app->request->post()))
         {
             $totalAmount = 0;
@@ -109,8 +110,11 @@ class OrdersController extends Controller
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         }
+        $allProducts = Products::find()->all();
         return $this->render('create', [
             'model' => $model,
+            'customer' => $customer,
+            'allProducts' => $allProducts,
         ]);
 
     }
