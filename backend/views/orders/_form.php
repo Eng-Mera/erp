@@ -20,11 +20,12 @@ use yii\bootstrap\Tabs;
                 [
                     'label' => 'Customer',
                     'content' => $this->render('customer_form', ['customer' => $customer, 'model' => $model , 'form' => $form]),
-                    'active' => true
+                    'active' => true,
+
                 ],
                 [
                     'label' => 'Products',
-                    'content' => $this->render('products_form', ['model' => $model , 'allProducts' => $allProducts, 'form' => $form]),
+                    'content' => ($model->isNewRecord)? $this->render('products_form', ['model' => $model , 'allProducts' => $allProducts ,'form' => $form]) : $this->render('products_form', ['model' => $model , 'allProducts' => $allProducts, 'products' => $products ,'form' => $form]),
                 ],
                 [
                     'label' => 'Order',
@@ -34,6 +35,5 @@ use yii\bootstrap\Tabs;
     ?>
 
     <?php ActiveForm::end(); ?>
-
 
 </div>

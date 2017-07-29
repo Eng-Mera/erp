@@ -58,7 +58,7 @@ class Customers extends \yii\db\ActiveRecord
             'address1' => 'Address1',
             'address2' => 'Address2',
             'city' => 'City',
-            'gov' => 'Gov',
+            'gov' => 'Governorate',
         ];
     }
 

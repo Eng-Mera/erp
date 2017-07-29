@@ -33,18 +33,31 @@ class OrdersController extends Controller
         ];
     }
 
+    public function actionGetcustomer($num)
+    {
+        $customer = Customers::find()->where(['or',['=','phone1',$num],['=','phone2',$num]])->one()->toArray();
+        return json_encode($customer);
+    }
+
     /**
      * Lists all Orders models.
      * @return mixed
      */
     public function actionIndex()
     {
+        $allOrders = Orders::find()->count();
+        $todayOrders = Orders::find()->andWhere(['>=', 'created_at', date("Y-m-d",time())])->count();
+        $customers = Customers::find()->count();
+
         $searchModel = new OrdersSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'allOrders' => $allOrders,
+            'todayOrders' => $todayOrders,
+            'customers' => $customers,
         ]);
     }
 
@@ -70,43 +83,69 @@ class OrdersController extends Controller
         $model = new Orders();
         $customer = new Customers();
         $allProducts = Products::find()->all();
+        $totalAmount = 0;
         if ($model->load(Yii::$app->request->post()))
         {
-
-            echo '<pre>';
-            var_dump(Yii::$app->request->post()['Orders']);
-            var_dump(Yii::$app->request->post()['Products']);
-            var_dump(Yii::$app->request->post()['Customers']);
-            die();
-            $totalAmount = 0;
-            $customerId = Customers::find()->select('id')->where(['or', ['=' , 'phone1' , $model->customer_id],['=' , 'phone2' , $model->customer_id]])->scalar();
-            if (!empty($customerId))
+            $postData = Yii::$app->request->post();
+            if (array_key_exists("Customers",Yii::$app->request->post()))
             {
-                $model->customer_id = $customerId;
+                $customerInfo = $postData['Customers'];
+                $customerModel = new Customers();
+                $customerModel->name = $customerInfo['name'];
+                $customerModel->email = $customerInfo['email'];
+                $customerModel->facebook = $customerInfo['facebook'];
+                $customerModel->phone1 = $customerInfo['phone1'];
+                $customerModel->phone2 = $customerInfo['phone2'];
+                $customerModel->address1 = $customerInfo['address1'];
+                $customerModel->address2 = $customerInfo['address2'];
+                $customerModel->city = $customerInfo['city'];
+                $customerModel->gov = $customerInfo['gov'];
+                $customerModel->save();
+                $model->customer_id = $customerModel->id;
             }
+            else
+            {
+                $customerId = Customers::find()->select('id')->where(['or' , ['=' , 'phone1' , $postData['Orders']['customer_id']] , ['=' , 'phone2' , $postData['Orders']['customer_id']]])->scalar();
+                if (!empty($customerId))
+                {
+                    $model->customer_id = $customerId;
+                }
+                else
+                {
+                    throw new NotFoundHttpException();
+
+                }
+            }
+
             $model->user_id = Yii::$app->user->id;
+            $model->customer_notes = $postData['Orders']['customer_notes'];
+            $model->status = $postData['Orders']['status'];
+            $model->shipping_fees = 20;
             $model->created_at = date("Y-m-d H:i:s");
             $model->updated_at = date("Y-m-d H:i:s");
 
             if ($model->save())
             {
-                $products = Yii::$app->request->post()['Orders']['products'];
+                $products = $postData['Products'];
                 $chunks = array_chunk ( $products , 2 );
-
+                $chunks = array_filter($chunks);
                 foreach ($chunks as $chunk)
                 {
-                    $quantity = $chunk[0]['quantity'];
-                    $product = $chunk[1]['product'];
-                    if (!empty($quantity) and !empty($product))
+                    if (array_key_exists('product',$chunk[0]) and !empty($chunk[0]['product']) and array_key_exists('quantity',$chunk[1]) and !empty($chunk[1]['quantity']))
                     {
-                        $productModel = new OrdersProducts();
-                        $productModel->order_id = $model->id;
-                        $productModel->product_id = $product;
-                        $productModel->counter = $quantity;
-                        $productModel->save();
+                        $product = $chunk[0]['product'];
+                        $quantity = $chunk[1]['quantity'];
+                        if (!empty($quantity) and !empty($product))
+                        {
+                            $productModel = new OrdersProducts();
+                            $productModel->order_id = $model->id;
+                            $productModel->product_id = $product;
+                            $productModel->counter = $quantity;
+                            $productModel->save();
 
-                        $productPrice = Products::find()->select('sale_price')->where( ['=' , 'id' , $product])->scalar();
-                        $totalAmount += ($productPrice * $quantity);
+                            $productPrice = Products::find()->select('sale_price')->where( ['=' , 'id' , $product])->scalar();
+                            $totalAmount += ($productPrice * $quantity);
+                        }
                     }
                 }
 
@@ -135,6 +174,9 @@ class OrdersController extends Controller
     {
         $model = $this->findModel($id);
         $model->updated_at = date("Y-m-d H:i:s");
+
+        $customer = Customers::find()->where(['=','id',$model->customer_id])->one();
+        $allProducts = Products::find()->all();
 
         $productsIds = OrdersProducts::find()->select(['product_id','counter'])->where(['=' , 'order_id', $id])->all();
         $products = [];
@@ -213,12 +255,16 @@ class OrdersController extends Controller
                 return $this->render('update', [
                     'model' => $model,
                     'products' => $products,
+                    'customer' => $customer,
+                    'allProducts' => $allProducts
                 ]);
             }
         } else {
             return $this->render('update', [
                 'model' => $model,
                 'products' => $products,
+                'customer' => $customer,
+                'allProducts' => $allProducts
             ]);
         }
     }

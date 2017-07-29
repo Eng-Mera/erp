@@ -10,12 +10,53 @@ use yii\grid\GridView;
 $this->title = 'Orders';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<div class="row">
+    <div class="col-md-4 col-sm-6 col-xs-12">
+        <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="fa fa-cubes"></i></span>
+
+            <div class="info-box-content">
+                <span class="info-box-text">Orders</span>
+                <span class="info-box-number"><?= $allOrders; ?></span>
+            </div>
+            <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+    </div>
+    <!-- /.col -->
+    <div class="col-md-4 col-sm-6 col-xs-12">
+        <div class="info-box">
+            <span class="info-box-icon bg-green"><i class="fa fa-truck"></i></span>
+
+            <div class="info-box-content">
+                <span class="info-box-text">Today's Order</span>
+                <span class="info-box-number"><?= $todayOrders; ?></span>
+            </div>
+            <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+    </div>
+    <!-- /.col -->
+    <div class="col-md-4 col-sm-6 col-xs-12">
+        <div class="info-box">
+            <span class="info-box-icon bg-yellow"><i class="fa fa-users"></i></span>
+
+            <div class="info-box-content">
+                <span class="info-box-text">Customers</span>
+                <span class="info-box-number"><?= $customers ?></span>
+            </div>
+            <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+    </div>
+    <!-- /.col -->
+</div>
 <div class="orders-index">
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?php echo Html::a('Create Orders', ['create'], ['class' => 'btn btn-success']) ?>
+        <?php //echo Html::a('Create Orders', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php echo GridView::widget([
@@ -31,7 +72,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             [
-                'attribute' => 'user_id ',
+                'attribute' => 'user_id',
                 'label' => 'User',
                 'value' => function($model) {
                     return \common\models\User::find()->where('id='.$model['user_id'])->one()->username;
@@ -39,8 +80,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
 
             [
-                'attribute' => 'customer_id ',
-                'label' => 'Customer ',
+                'attribute' => 'customer_id',
+                'label' => 'Customer',
                 'value' => function($model) {
                     return \app\models\Customers::find()->where('id='.$model['customer_id'])->one()->name;
                 }
@@ -56,6 +97,17 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'customer.gov',
+            ],
+            [
+                'attribute' => 'status',
+                'format' => 'raw',
+                'value' => function($model){
+                    if ($model->status == 0 ) { return '<span class="label label-info">Pending</span>'; }
+                    if ($model->status == 1 ) { return '<span class="label label-danger">Processing</span>'; }
+                    if ($model->status == 2 ) { return '<span class="label label-warning">Shipped</span>'; }
+                    if ($model->status == 3 ) { return '<span class="label label-success">Delivered</span>'; }
+
+                }
             ],
             'created_at',
             [

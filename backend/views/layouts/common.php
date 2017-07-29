@@ -12,6 +12,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\log\Logger;
 use yii\widgets\Breadcrumbs;
+use app\models\Orders;
 
 $bundle = BackendAsset::register($this);
 ?>
@@ -141,27 +142,38 @@ $bundle = BackendAsset::register($this);
                     ],
                     [
                         'label' => Yii::t('backend', 'Projects'),
-                        'icon' => '<i class="fa fa-bar-chart-o"></i>',
+                        'icon' => '<i class="fa fa-clone text-purple"></i>',
                         'url' => ['/projects/index'],
                         'visible' => Yii::$app->user->can('administrator')
 
                     ],
                     [
                         'label' => Yii::t('backend', 'Products'),
-                        'icon' => '<i class="fa fa-bar-chart-o"></i>',
+                        'icon' => '<i class="fa fa-cubes text-olive"></i>',
                         'url' => ['/products/index'],
                         'visible' => Yii::$app->user->can('administrator')
 
                     ],
                     [
                         'label' => Yii::t('backend', 'Customers'),
-                        'icon' => '<i class="fa fa-bar-chart-o"></i>',
+                        'icon' => '<i class="fa fa-user-o text-orange"></i>',
                         'url' => ['/customers/index'],
                     ],
                     [
                         'label' => Yii::t('backend', 'Orders'),
-                        'icon' => '<i class="fa fa-bar-chart-o"></i>',
+                        'options' => ['class' => 'header']
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'List Orders'),
+                        'icon' => '<i class="fa fa-truck text-green"></i>',
                         'url' => ['/orders/index'],
+                        'badge' => Orders::find()->andWhere(['>=', 'created_at', date("Y-m-d",time())])->count(),
+                        'badgeBgClass' => 'label-danger',
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'Add New Order'),
+                        'icon' => '<i class="fa fa-plus-circle text-yellow"></i>',
+                        'url' => ['/orders/create'],
                     ],
 
                     [
@@ -171,28 +183,28 @@ $bundle = BackendAsset::register($this);
                     ],
                     [
                         'label' => Yii::t('backend', 'Timeline'),
-                        'icon' => '<i class="fa fa-bar-chart-o"></i>',
+                        'icon' => '<i class="fa fa-bar-chart-o text-blue"></i>',
                         'url' => ['/timeline-event/index'],
                         'badge' => TimelineEvent::find()->today()->count(),
                         'badgeBgClass' => 'label-success',
                         'visible' => Yii::$app->user->can('administrator')
 
                     ],
-                    [
-                        'label' => Yii::t('backend', 'Content'),
-                        'url' => '#',
-                        'icon' => '<i class="fa fa-edit"></i>',
-                        'options' => ['class' => 'treeview'],
-                        'items' => [
-                            ['label' => Yii::t('backend', 'Static pages'), 'url' => ['/page/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
-                            ['label' => Yii::t('backend', 'Articles'), 'url' => ['/article/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
-                            ['label' => Yii::t('backend', 'Article Categories'), 'url' => ['/article-category/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
-                            ['label' => Yii::t('backend', 'Text Widgets'), 'url' => ['/widget-text/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
-                            ['label' => Yii::t('backend', 'Menu Widgets'), 'url' => ['/widget-menu/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
-                            ['label' => Yii::t('backend', 'Carousel Widgets'), 'url' => ['/widget-carousel/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
-                        ],
-                        'visible' => Yii::$app->user->can('administrator')
-                    ],
+//                    [
+//                        'label' => Yii::t('backend', 'Content'),
+//                        'url' => '#',
+//                        'icon' => '<i class="fa fa-edit"></i>',
+//                        'options' => ['class' => 'treeview'],
+//                        'items' => [
+//                            ['label' => Yii::t('backend', 'Static pages'), 'url' => ['/page/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+//                            ['label' => Yii::t('backend', 'Articles'), 'url' => ['/article/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+//                            ['label' => Yii::t('backend', 'Article Categories'), 'url' => ['/article-category/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+//                            ['label' => Yii::t('backend', 'Text Widgets'), 'url' => ['/widget-text/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+//                            ['label' => Yii::t('backend', 'Menu Widgets'), 'url' => ['/widget-menu/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+//                            ['label' => Yii::t('backend', 'Carousel Widgets'), 'url' => ['/widget-carousel/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+//                        ],
+//                        'visible' => Yii::$app->user->can('administrator')
+//                    ],
                     [
                         'label' => Yii::t('backend', 'System'),
                         'options' => ['class' => 'header'],
@@ -200,51 +212,51 @@ $bundle = BackendAsset::register($this);
                     ],
                     [
                         'label' => Yii::t('backend', 'Users'),
-                        'icon' => '<i class="fa fa-users"></i>',
+                        'icon' => '<i class="fa fa-users text-maroon"></i>',
                         'url' => ['/user/index'],
                         'visible' => Yii::$app->user->can('administrator')
                     ],
                     [
                         'label' => Yii::t('backend', 'Reports'),
-                        'icon' => '<i class="fa fa-line-chart"></i>',
+                        'icon' => '<i class="fa fa-line-chart text-red"></i>',
                         'url' => ['/reports/index'],
                         'visible' => Yii::$app->user->can('administrator')
                     ],
-                    [
-                        'label' => Yii::t('backend', 'Other'),
-                        'url' => '#',
-                        'icon' => '<i class="fa fa-cogs"></i>',
-                        'options' => ['class' => 'treeview'],
-                        'items' => [
-                            [
-                                'label' => Yii::t('backend', 'i18n'),
-                                'url' => '#',
-                                'icon' => '<i class="fa fa-flag"></i>',
-                                'options' => ['class' => 'treeview'],
-                                'items' => [
-                                    ['label' => Yii::t('backend', 'i18n Source Message'), 'url' => ['/i18n/i18n-source-message/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
-                                    ['label' => Yii::t('backend', 'i18n Message'), 'url' => ['/i18n/i18n-message/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
-                                ]
-                            ],
-                            ['label' => Yii::t('backend', 'Key-Value Storage'), 'url' => ['/key-storage/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
-                            ['label' => Yii::t('backend', 'File Storage'), 'url' => ['/file-storage/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
-                            ['label' => Yii::t('backend', 'Cache'), 'url' => ['/cache/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
-                            ['label' => Yii::t('backend', 'File Manager'), 'url' => ['/file-manager/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
-                            [
-                                'label' => Yii::t('backend', 'System Information'),
-                                'url' => ['/system-information/index'],
-                                'icon' => '<i class="fa fa-angle-double-right"></i>'
-                            ],
-                            [
-                                'label' => Yii::t('backend', 'Logs'),
-                                'url' => ['/log/index'],
-                                'icon' => '<i class="fa fa-angle-double-right"></i>',
-                                'badge' => SystemLog::find()->count(),
-                                'badgeBgClass' => 'label-danger',
-                            ],
-                        ],
-                        'visible' => Yii::$app->user->can('administrator')
-                    ]
+//                    [
+//                        'label' => Yii::t('backend', 'Other'),
+//                        'url' => '#',
+//                        'icon' => '<i class="fa fa-cogs"></i>',
+//                        'options' => ['class' => 'treeview'],
+//                        'items' => [
+//                            [
+//                                'label' => Yii::t('backend', 'i18n'),
+//                                'url' => '#',
+//                                'icon' => '<i class="fa fa-flag"></i>',
+//                                'options' => ['class' => 'treeview'],
+//                                'items' => [
+//                                    ['label' => Yii::t('backend', 'i18n Source Message'), 'url' => ['/i18n/i18n-source-message/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+//                                    ['label' => Yii::t('backend', 'i18n Message'), 'url' => ['/i18n/i18n-message/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+//                                ]
+//                            ],
+//                            ['label' => Yii::t('backend', 'Key-Value Storage'), 'url' => ['/key-storage/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+//                            ['label' => Yii::t('backend', 'File Storage'), 'url' => ['/file-storage/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+//                            ['label' => Yii::t('backend', 'Cache'), 'url' => ['/cache/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+//                            ['label' => Yii::t('backend', 'File Manager'), 'url' => ['/file-manager/index'], 'icon' => '<i class="fa fa-angle-double-right"></i>'],
+//                            [
+//                                'label' => Yii::t('backend', 'System Information'),
+//                                'url' => ['/system-information/index'],
+//                                'icon' => '<i class="fa fa-angle-double-right"></i>'
+//                            ],
+//                            [
+//                                'label' => Yii::t('backend', 'Logs'),
+//                                'url' => ['/log/index'],
+//                                'icon' => '<i class="fa fa-angle-double-right"></i>',
+//                                'badge' => SystemLog::find()->count(),
+//                                'badgeBgClass' => 'label-danger',
+//                            ],
+//                        ],
+//                        'visible' => Yii::$app->user->can('administrator')
+//                    ]
                 ]
             ]) ?>
         </section>

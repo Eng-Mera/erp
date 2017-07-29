@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use app\models\Customers;
 use app\models\Orders;
 use common\models\User;
 use yii\data\ActiveDataProvider;
@@ -18,8 +19,10 @@ class ReportsController extends \yii\web\Controller
         $orders = Orders::find()->all();
         $allOrdersCounter = count($orders);
 
-        $todayOrders = Orders::find()->where(['=','created_at',date('Y-m-d')])->all();
-        $todayOrdersCounter = count($todayOrders);
+        $todayOrders = Orders::find()->where(['>=','created_at',date("Y-m-d",time())])->all();
+        $todayOrdersCounter = Orders::find()->where(['>=','created_at',date("Y-m-d",time())])->count();
+
+        $customers = Customers::find()->count();
 
         foreach ($orders as $order)
         {
@@ -33,6 +36,7 @@ class ReportsController extends \yii\web\Controller
             $todayShippingFees += $todayOrder->shipping_fees;
         }
 
+
         return $this->render('index', [
             'allOrdersCounter' => $allOrdersCounter,
             'totalAmount' => $totalAmount,
@@ -40,6 +44,7 @@ class ReportsController extends \yii\web\Controller
             'todayOrdersCounter' => $todayOrdersCounter,
             'todayTotalAmount' => $todayTotalAmount,
             'todayShippingFees' => $todayShippingFees,
+            'customers' => $customers,
 
         ]);
     }

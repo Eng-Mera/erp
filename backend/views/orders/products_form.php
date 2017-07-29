@@ -73,17 +73,23 @@ use app\models\Products;
         foreach ($allProducts as $product)
         {
     ?>
-            <li style="display: inline-block;">
+            <li style="display: inline-block; margin-top: 10px">
+                <p style="text-align: center"><?= $product->name; ?></p>
                 <input type="checkbox" name="Products[][product]" id="<?= "prod". $product->id ?>" value="<?= $product->id ?>"/>
-                <label for="<?= "prod". $product->id ?>">
+                <label style="text-align: center" for="<?= "prod". $product->id ?>">
                     <img src="<?= Yii::getAlias('@backendUrl') . '/uploads/' .  $product->image; ?>" alt="<?= $product->name; ?>">
                 </label>
-                <div class="col-md-5">
-                    <input type="number" name="Products[][quantity]" min="0" class="form-control">
+
+                <div>
+                    <input type="number" name="Products[][quantity]" min="0" class="form-control" placeholder="quantity">
                 </div>
-                    <?= $product->name; ?>
             </li>
     <?php
         }
     ?>
 </ul>
+
+<div class="pull-right">
+    <a class="btn btn-info btnPrevious" >Previous</a>
+    <a class="btn btn-warning btnNext" >Next</a>
+</div>

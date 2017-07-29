@@ -21,6 +21,8 @@ use yii\bootstrap\ActiveForm;
 
     <?php echo $form->field($model, 'customer_id') ?>
 
+    <?php echo $form->field($model, 'status') ?>
+
     <?php echo $form->field($model, 'shipping_fees') ?>
 
     <?php echo $form->field($model, 'customer_notes') ?>
