@@ -218,8 +218,25 @@ $bundle = BackendAsset::register($this);
                     ],
                     [
                         'label' => Yii::t('backend', 'Reports'),
-                        'icon' => '<i class="fa fa-line-chart text-red"></i>',
+                        'options' => ['class' => 'header'],
+                        'visible' => Yii::$app->user->can('administrator')
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'Statistics'),
+                        'icon' => '<i class="fa fa-pie-chart text-red"></i>',
                         'url' => ['/reports/index'],
+                        'visible' => Yii::$app->user->can('administrator')
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'Users Target'),
+                        'icon' => '<i class="fa fa-line-chart text-olive"></i>',
+                        'url' => ['/reports/target'],
+                        'visible' => Yii::$app->user->can('administrator')
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'Customers Report'),
+                        'icon' => '<i class="fa fa-area-chart text-info"></i>',
+                        'url' => ['/reports/customers'],
                         'visible' => Yii::$app->user->can('administrator')
                     ],
 //                    [

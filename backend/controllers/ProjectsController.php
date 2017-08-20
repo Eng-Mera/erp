@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use app\models\Products;
 use Yii;
 use app\models\Projects;
 use backend\models\search\ProjectsSearch;
@@ -40,6 +41,17 @@ class ProjectsController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+    }
+
+    public function actionProducts($project_id)
+    {
+        if (!empty($project_id))
+        {
+            echo $project_id;
+            die();
+            $products = Products::find()->where(['=','project_id',$project_id])->all();
+        }
+        $this->redirect('/products');
     }
 
     /**

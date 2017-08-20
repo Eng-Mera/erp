@@ -41,7 +41,15 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'city',
             'country',
-
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{products}',
+                'buttons' => [
+                    'products' => function ($url, $model) {
+                        return Html::a('<span class="fa fa-cubes"></span>', ['products','project_id' => $model->id], ['class' => 'btn bg-maroon' , 'target' => '_blank']);
+                    },
+                ]
+            ],
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
